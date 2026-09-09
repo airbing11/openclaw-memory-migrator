@@ -62,10 +62,12 @@ node bin/openclaw-memory-migrator.js normalize \
 node bin/openclaw-memory-migrator.js audit \
   --adapter lancedb-pro \
   --input export/global.json \
+  --input export/main.json \
   --output reports/audit.json
 node bin/openclaw-memory-migrator.js render \
   --adapter lancedb-pro \
   --input export/global.json \
+  --input export/main.json \
   --output staged-memory/imports/lancedb-pro
 ```
 
