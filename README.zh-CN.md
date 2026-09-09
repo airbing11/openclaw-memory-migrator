@@ -96,6 +96,17 @@ CLI 默认只做本地、非破坏性转换。生产使用前必须阅读
 用于证明流程可行，不代表对其他安装环境作成功保证；公开匿名案例前仍需 owner
 批准。
 
+## 反馈
+
+当前 RC 需要的是支持来源上的脱敏 dry-run 计数，而不是原始记忆。请使用
+Issue Form：
+
+- [脱敏 dry-run 报告](https://github.com/airbing11/openclaw-memory-migrator/issues/new?template=dry-run-report.yml)
+- [兼容性缺陷](https://github.com/airbing11/openclaw-memory-migrator/issues/new?template=compatibility-bug.yml)
+
+不要上传导出文件、JSONL、截图、主机名或记忆正文。隐私红线见
+[`docs/community-launch-plan.md`](docs/community-launch-plan.md)。
+
 ## 开发
 
 ```bash

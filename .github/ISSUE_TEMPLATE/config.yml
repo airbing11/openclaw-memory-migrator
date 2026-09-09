@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Private security report
+    url: https://github.com/airbing11/openclaw-memory-migrator/security/advisories/new
+    about: Use a private advisory for vulnerabilities or any report that may contain real memory, credentials, or host details.
+  - name: Compatibility matrix
+    url: https://github.com/airbing11/openclaw-memory-migrator/blob/main/references/compatibility.md
+    about: Check supported adapters and known limits before filing.
+  - name: ClawHub listing
+    url: https://clawhub.ai/skills/memory-core-migrator
+    about: Install the Skill from ClawHub. File support here, not on ClawHub comments.

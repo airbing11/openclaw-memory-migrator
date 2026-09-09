@@ -1,0 +1,135 @@
+name: Anonymized dry-run report
+description: Share a redacted reconciliation summary from a supported-source dry-run. Do not attach exports, JSONL, memory text, or screenshots.
+title: "[dry-run] "
+labels:
+  - dry-run
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping prove the migration path.
+
+        **Do not paste** raw memory, conversation logs, credentials, hostnames,
+        channel IDs, private paths, backup hashes, screenshots, or unredacted
+        `audit.json` / JSONL / export files.
+
+        Acceptable evidence is counts, version strings, adapter names, and a
+        sanitized error class. If you already pasted sensitive data, close this
+        issue and open a redacted one.
+  - type: checkboxes
+    id: redaction
+    attributes:
+      label: Redaction confirmation
+      options:
+        - label: This report contains no raw memory text, credentials, hostnames, channel IDs, or private paths.
+          required: true
+        - label: I am not uploading export files, canonical JSONL, backups, or screenshots.
+          required: true
+        - label: I ran a local dry-run only, or I have already isolated any write from production state.
+          required: true
+  - type: dropdown
+    id: adapter
+    attributes:
+      label: Source adapter
+      options:
+        - lancedb-pro
+        - lancedb-official-list-beta
+        - qmd
+        - markdown
+        - canonical-v1
+        - other / unknown
+    validations:
+      required: true
+  - type: input
+    id: openclaw_version
+    attributes:
+      label: OpenClaw version
+      placeholder: 2026.9.x
+    validations:
+      required: true
+  - type: input
+    id: plugin_version
+    attributes:
+      label: Source plugin or file version
+      placeholder: memory-lancedb-pro 1.1.0-beta.10, or n/a for Markdown
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operator OS
+      options:
+        - Linux
+        - macOS
+        - Windows
+        - mixed / container
+    validations:
+      required: true
+  - type: input
+    id: counts
+    attributes:
+      label: "Counts (source / export / canonical / rejected)"
+      description: Integers only. Example — 1520 / 1520 / 1518 / 2
+      placeholder: 0 / 0 / 0 / 0
+    validations:
+      required: true
+  - type: input
+    id: scopes
+    attributes:
+      label: Scope and agent counts
+      description: Counts only. Do not name private agents or channels.
+      placeholder: "scopes=2, agents=2"
+    validations:
+      required: true
+  - type: dropdown
+    id: export_cap
+    attributes:
+      label: Did a source export limit or default page size apply?
+      options:
+        - No known cap
+        - Yes, export capped (for example 1,000 records)
+        - Yes, required list pagination
+        - Unknown
+    validations:
+      required: true
+  - type: dropdown
+    id: ids_reconcile
+    attributes:
+      label: Did source IDs reconcile with canonical IDs?
+      options:
+        - Yes, exact match
+        - Partial / extra IDs
+        - Failed closed before audit
+        - Not applicable
+    validations:
+      required: true
+  - type: input
+    id: duplicates
+    attributes:
+      label: Duplicate groups reported
+      description: Counts only. Do not include example text.
+      placeholder: "exact=3, approximate=1"
+    validations:
+      required: false
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Outcome
+      description: What passed, what failed closed, and whether you stopped before any write.
+      placeholder: Preflight passed. Normalize wrote N records. Audit stopped because...
+    validations:
+      required: true
+  - type: textarea
+    id: sanitized_error
+    attributes:
+      label: Sanitized error or warning
+      description: Replace paths, hostnames, and memory snippets with placeholders such as `<export>` and `<redacted>`.
+    validations:
+      required: false
+  - type: checkboxes
+    id: extras
+    attributes:
+      label: Optional follow-up
+      options:
+        - label: I can provide a synthetic fixture that reproduces the failure.
+        - label: I am willing to be contacted for a structured operator interview without sharing memory content.

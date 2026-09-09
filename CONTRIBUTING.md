@@ -42,3 +42,9 @@ zero-downtime, and recall-improvement claims.
 
 Follow [`RELEASE_CHECKLIST.md`](RELEASE_CHECKLIST.md). Public repository,
 ClawHub, and community publication are separate maintainer approvals.
+
+Community drafts, channel rules, and the per-post checklist live in
+[`docs/community-launch-plan.md`](docs/community-launch-plan.md) and
+[`marketing/post-approval-checklist.md`](marketing/post-approval-checklist.md).
+Do not publish model-written posts to V2EX. Do not file promotional issues on
+`openclaw/openclaw`.

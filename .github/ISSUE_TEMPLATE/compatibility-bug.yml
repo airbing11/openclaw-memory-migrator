@@ -1,0 +1,94 @@
+name: Compatibility bug
+description: Report a fail-closed adapter, schema, or capability mismatch using sanitized details only.
+title: "[compat] "
+labels:
+  - compatibility
+body:
+  - type: markdown
+    attributes:
+      value: |
+        File this when the CLI or Skill rejects a source you expected to
+        support, or when counts/IDs drift.
+
+        **Do not attach** real exports, memory text, credentials, or host
+        details. A synthetic fixture is the preferred reproduction.
+  - type: checkboxes
+    id: redaction
+    attributes:
+      label: Redaction confirmation
+      options:
+        - label: This issue contains no raw memory, credentials, hostnames, channel IDs, or private paths.
+          required: true
+        - label: I am not uploading production export files.
+          required: true
+  - type: dropdown
+    id: adapter
+    attributes:
+      label: Adapter
+      options:
+        - lancedb-pro
+        - lancedb-official-list-beta
+        - qmd
+        - markdown
+        - canonical-v1
+        - cli / preflight
+        - other / unknown
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: OpenClaw version, source plugin or file version, and Node.js version.
+      placeholder: OpenClaw 2026.9.x, plugin 1.1.0-beta.10, Node 24
+    validations:
+      required: true
+  - type: dropdown
+    id: command
+    attributes:
+      label: Command that failed
+      options:
+        - preflight
+        - normalize
+        - audit
+        - render
+        - other
+    validations:
+      required: true
+  - type: dropdown
+    id: failure_class
+    attributes:
+      label: Failure class
+      options:
+        - unknown envelope or schema
+        - count mismatch
+        - missing agent or scope
+        - export cap or pagination
+        - path / symlink / portability
+        - approval or run-state
+        - documentation mismatch
+        - other
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected
+      placeholder: Adapter accepts the documented capture manifest and reports N records.
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual
+      description: Quote only the fail-closed message after replacing paths and secrets.
+      placeholder: "error: official LanceDB beta requires scoped list-capture evidence"
+    validations:
+      required: true
+  - type: textarea
+    id: fixture
+    attributes:
+      label: Synthetic reproduction
+      description: Invented names only. If you cannot share a fixture, describe the envelope fields without values.
+    validations:
+      required: false

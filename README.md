@@ -102,6 +102,18 @@ Markdown import, used an eight-query recall gate, and completed a seven-day
 soak. That case is a development proof point, not a guarantee for other
 installations. A publishable anonymized case study requires owner approval.
 
+## Feedback
+
+This RC is looking for anonymized dry-run counts from supported sources, not
+raw memory. Use the Issue Forms:
+
+- [Anonymized dry-run report](https://github.com/airbing11/openclaw-memory-migrator/issues/new?template=dry-run-report.yml)
+- [Compatibility bug](https://github.com/airbing11/openclaw-memory-migrator/issues/new?template=compatibility-bug.yml)
+
+Do not attach exports, JSONL, screenshots, hostnames, or memory text. See
+[`docs/community-launch-plan.md`](docs/community-launch-plan.md) for the
+privacy redlines.
+
 ## Development
 
 ```bash
