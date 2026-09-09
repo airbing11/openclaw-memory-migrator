@@ -35,7 +35,7 @@
 - [x] At least one independent dry run has been reviewed.
 - [x] Case-study claims have owner approval.
 - [x] Interruption tests prove safe restart without duplicate amplification.
-- [ ] Release evidence bundle includes CI results, fixture manifest, command
+- [x] Release evidence bundle includes CI results, fixture manifest, command
       transcript, hashes, SBOM, signed tag, and rollback demonstration.
 
 ## Content
@@ -51,4 +51,4 @@
 - [x] Maintainer approves public repository creation/push.
 - [x] Maintainer approves ClawHub publication under MIT-0 platform terms.
 - [ ] Maintainer approves each community post.
-- [ ] Security contact or advisory channel is configured.
+- [x] Security contact or advisory channel is configured.
