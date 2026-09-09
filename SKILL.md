@@ -1,12 +1,15 @@
 ---
 name: openclaw-memory-migrator
-description: Safely migrates OpenClaw memory from LanceDB Pro, official LanceDB exports, QMD, or Markdown into memory-core. Use when an owner asks to migrate, audit, deduplicate, benchmark, cut over, or roll back an OpenClaw memory backend.
+description: Safely migrates OpenClaw memory from LanceDB Pro, official LanceDB list captures, QMD, or Markdown into memory-core. Use when an owner asks to migrate, audit, deduplicate, benchmark, cut over, or roll back an OpenClaw memory backend.
 disable-model-invocation: true
 ---
 
 # OpenClaw Memory Migrator
 
 Move the memory. Keep the proof.
+
+Use this Skill when an owner wants a safer, verifiable, and practical path
+from a third-party memory backend back to OpenClaw's official memory-core.
 
 ## Safety rules
 
@@ -24,7 +27,7 @@ Move the memory. Keep the proof.
 
 ## Supported paths
 
-- Stable: memory-lancedb-pro JSON export to memory-core Markdown.
+- Stable: memory-lancedb-pro JSON capture to memory-core Markdown.
 - Stable: Markdown or QMD-owned Markdown to memory-core Markdown.
 - Beta: captured official memory-lancedb `ltm list` JSON to memory-core Markdown.
 - Unsupported: direct opaque LanceDB database parsing, vector transfer, arbitrary backend-to-backend sync.

@@ -3,7 +3,7 @@
 **Move the memory. Keep the proof.**
 
 A safety-gated OpenClaw Skill and CLI toolkit for moving authoritative memory
-from LanceDB Pro, official LanceDB exports, QMD, or Markdown into
+from LanceDB Pro, official LanceDB list captures, QMD, or Markdown into
 `memory-core`.
 
 [中文说明](README.zh-CN.md)
@@ -13,6 +13,10 @@ from LanceDB Pro, official LanceDB exports, QMD, or Markdown into
 Changing a memory backend is not a file-copy problem. A trustworthy migration
 must prove what was exported, avoid transferring incompatible vectors, protect
 credentials, preserve rollback, and compare recall before retiring the source.
+
+This project gives users returning from third-party memory backends to
+OpenClaw's official memory-core a safer, verifiable, and practical migration
+path.
 
 OpenClaw Memory Migrator supplies that control plane:
 

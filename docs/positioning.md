@@ -13,6 +13,10 @@ trusting an opaque one-off script, OpenClaw Memory Migrator turns source memory
 into an inspectable manifest, reconciles every record it can identify, stages
 memory-core content, and requires proof before cutover and retirement.
 
+It is specifically designed for users who want to return from third-party
+memory backends to OpenClaw's official memory-core through a safer, verifiable,
+and practical workflow.
+
 Unlike backend plugins or manual copy guides, it couples conversion with
 approval gates, recall benchmarks, and a prepared rollback.
 
@@ -42,6 +46,11 @@ Technical descriptor:
 > A safety-gated migration toolkit for OpenClaw memory-core.
 
 > 面向 OpenClaw memory-core 的安全门控迁移工具。
+
+Chinese audience statement:
+
+> 为希望从第三方记忆后端迁回 OpenClaw 官方 memory-core 的用户，提供安全、
+> 可验证、易操作的迁移路径。
 
 ## Claims allowed for v0.1
 

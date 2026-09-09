@@ -11,8 +11,8 @@ OpenClaw Memory Migrator
 
 ### Short description
 
-Safely stage LanceDB, QMD, and Markdown memory for memory-core with manifests,
-duplicate audits, run-bound approvals, recall checks, and rollback evidence.
+An evidence-first Skill for users moving memory back to OpenClaw's official
+memory-core, with manifests, duplicate audits, approvals, and rollback evidence.
 
 ### Body
 
@@ -22,6 +22,9 @@ OpenClaw Memory Migrator is a local-first Skill and CLI toolkit for operators
 changing memory backends. It exports supported sources into a versioned,
 inspectable format, reconciles counts and IDs, renders reviewable memory-core
 Markdown, and blocks production actions until backup and approval gates pass.
+
+It gives users returning from third-party memory backends to OpenClaw's
+official memory-core a safer, verifiable, and practical migration path.
 
 It does not upload your memory, copy incompatible vectors, write OpenClaw
 SQLite internals, or delete duplicate records automatically.
@@ -37,8 +40,8 @@ OpenClaw Memory Migrator
 
 ### 简介
 
-将 LanceDB、QMD 与 Markdown 记忆安全迁移到 memory-core，提供清单核对、
-重复审计、run 级批准、召回验证和回滚证据。
+为希望从第三方记忆后端迁回 OpenClaw 官方 memory-core 的用户，提供安全、
+可验证、易操作的迁移 Skill，包含清单核对、重复审计、run 级批准和回滚证据。
 
 ### 正文
 
@@ -47,6 +50,9 @@ OpenClaw Memory Migrator
 OpenClaw Memory Migrator 是面向自托管运维者的本地优先 Skill 与 CLI。
 它将支持的来源导出为版本化、可审阅的中间格式，核对数量与 ID，生成
 memory-core Markdown，并在备份和批准闸门通过前阻止生产写操作。
+
+它尤其适合希望摆脱第三方插件兼容性风险、迁回 OpenClaw 官方记忆系统，
+同时又不愿依赖一次性脚本盲切的用户。
 
 它不会上传你的记忆，不会复制不兼容向量，不会直接改写 OpenClaw SQLite
 内部表，也不会自动删除重复记录。
@@ -95,7 +101,8 @@ recall, and keeping a rollback path.
 
 The project uses a versioned JSONL interchange format, renders Markdown rather
 than writing SQLite internals, and defaults to dry-run. The first RC supports
-LanceDB Pro exports, Markdown/QMD, and a beta generic LanceDB export adapter.
+LanceDB Pro exports, Markdown/QMD, and a beta adapter for versioned captures of
+the official `ltm list` output.
 
 I would especially value anonymized schema samples and failed dry-run reports
 from different OpenClaw versions.
@@ -103,6 +110,9 @@ from different OpenClaw versions.
 ## 中文社区短帖
 
 **标题：** 做了一个 OpenClaw 记忆迁移工具：先证明，再切槽
+
+如果你想从第三方记忆插件迁回 OpenClaw 官方 memory-core，又不想拿历史记忆
+冒险，这个 Skill 提供了一条安全、可验证、易操作的迁移路径。
 
 从 LanceDB/QMD 切到 memory-core，真正危险的不是“怎么转文本”，而是：
 

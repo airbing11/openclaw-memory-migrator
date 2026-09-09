@@ -3,7 +3,7 @@
 **迁移记忆，不迁移风险。**
 
 一套带安全闸门的 OpenClaw Skill 与 CLI 工具，将 LanceDB Pro、官方
-LanceDB 导出、QMD 或 Markdown 的权威记忆迁移到 `memory-core`。
+LanceDB 列表捕获、QMD 或 Markdown 的权威记忆迁移到 `memory-core`。
 
 [English](README.md)
 
@@ -11,6 +11,9 @@ LanceDB 导出、QMD 或 Markdown 的权威记忆迁移到 `memory-core`。
 
 更换记忆后端不是简单复制文件。可信迁移必须证明导出了什么、阻止不兼容向量
 进入新索引、保护密钥、保留回滚路径，并在退役旧后端前量化对比召回质量。
+
+本项目为希望从第三方记忆后端迁回 OpenClaw 官方 `memory-core` 的用户，
+提供一条安全、可验证、易操作的迁移路径。
 
 本项目提供：
 
