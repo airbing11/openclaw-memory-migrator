@@ -4,7 +4,7 @@
 
 - [ ] Tests pass on supported Node versions and Windows/Linux/macOS.
 - [x] Synthetic fixtures contain no real user or infrastructure data.
-- [ ] Every adapter fails closed on unknown schema.
+- [x] Every structured adapter fails closed on unknown envelope/schema.
 - [ ] CLI help and README commands match.
 - [x] Dry-run creates no migration output.
 - [x] No operation writes OpenClaw SQLite internals.
@@ -21,7 +21,7 @@
 
 ## Compatibility
 
-- [ ] Each stable adapter has a documented source version and fixture.
+- [x] Each stable adapter has a documented source version and fixture.
 - [ ] LanceDB Pro scope/limit behavior is capability-detected.
 - [x] Official LanceDB beta limitations are prominent.
 - [x] QMD support is based on authoritative Markdown or an official provider.

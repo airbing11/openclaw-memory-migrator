@@ -92,8 +92,9 @@ For QMD and Markdown, migrate the authoritative Markdown rather than QMD's
 derived index. OpenClaw 2026.9.x retired QMD backend configuration, so use the
 official Doctor migration where applicable rather than restoring legacy QMD
 keys. Official LanceDB has no export command in verified 2026.9.x releases;
-capture `openclaw ltm list --agent <id>` for every agent and label the
-adapter-owned file accordingly. Never reverse-engineer a live database.
+capture `openclaw ltm list --agent <id>` for every agent and wrap each array in
+the versioned `lancedb-official-list-beta` manifest documented in
+`references/compatibility.md`. Never reverse-engineer a live database.
 
 ### 4. Audit
 

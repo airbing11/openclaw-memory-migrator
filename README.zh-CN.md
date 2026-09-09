@@ -26,7 +26,8 @@ LanceDB 导出、QMD 或 Markdown 的权威记忆迁移到 `memory-core`。
 
 - 稳定：按版本探测的 memory-lancedb-pro JSON 捕获
 - 稳定：Markdown 与 QMD 的权威 Markdown
-- Beta：捕获官方 `memory-lancedb` 的 `ltm list` JSON
+- Beta：将官方 `memory-lancedb` 的 `ltm list` JSON 包装为带版本、按 Agent
+  隔离的捕获清单
 - 目标：通过 Markdown 与官方索引命令进入 memory-core
 
 不支持解析不透明数据库、复制旧向量或自动删除重复内容。

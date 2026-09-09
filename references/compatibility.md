@@ -32,9 +32,25 @@ Status: beta, captured `ltm list` JSON only.
 
 OpenClaw 2026.9.1–2026.9.3 exposes `openclaw ltm list`, `search`, `query`, and
 `stats`, but no import/export command. Capture `ltm list` separately for every
-agent, record core/plugin versions in an adapter-owned manifest, and pass those
-JSON arrays as `lancedb-official-list-beta`. Opaque database parsing is
-deliberately unsupported because schema and embedding storage can change.
+agent and wrap each JSON array in an adapter-owned manifest:
+
+```json
+{
+  "schema_version": 1,
+  "adapter": "lancedb-official-list-beta",
+  "openclaw_version": "2026.9.3",
+  "plugin_version": "2026.9.3",
+  "agent_id": "main",
+  "captured_at": "2026-09-09T00:00:00.000Z",
+  "count": 0,
+  "records": []
+}
+```
+
+The manifest is required because `ltm list` records do not include the agent
+ID. A raw array is accepted only when every record has an explicit `agentId`.
+Opaque database parsing is deliberately unsupported because schema and
+embedding storage can change.
 
 Verified reference:
 [`memory-lancedb` CLI at 1391f7c](https://github.com/openclaw/openclaw/blob/1391f7cd2d40ab5bbcf2f5f831d3a64f520e72d7/extensions/memory-lancedb/memory-cli.ts#L107-L233).

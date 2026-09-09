@@ -55,18 +55,38 @@ test("LanceDB Pro rejects malformed metadata instead of dropping it silently", a
   const root = await temporaryDirectory();
   const source = join(root, "bad-metadata.json");
   await writeFile(source, JSON.stringify({
-    memories: [{ id: "bad", text: "keep me", metadata: "{not-json" }],
+    memories: [{ id: "bad", text: "keep me", scope: "global", metadata: "{not-json" }],
   }));
   await assert.rejects(loadRecords("lancedb-pro", [source]), /metadata is not valid JSON/);
 });
 
-test("official LanceDB beta reads captured ltm list JSON only", async () => {
-  const records = await loadRecords("lancedb-official-list-beta", [join(fixtures, "official.jsonl")]);
+test("official LanceDB beta requires scoped list-capture evidence", async () => {
+  const records = await loadRecords("lancedb-official-list-beta", [join(fixtures, "official-manifest.json")]);
   assert.deepEqual(records.map((record) => record.text), ["one", "two"]);
   assert.equal(records[0].scope, "main");
   assert.equal(records[0].timestamp, "2023-11-14T22:13:20.000Z");
   const root = await temporaryDirectory();
   await assert.rejects(loadRecords("lancedb-official-list-beta", [root]), /explicit/);
+  const unscoped = join(root, "unscoped.json");
+  await writeFile(unscoped, '[{"id":"a","text":"one"}]');
+  await assert.rejects(loadRecords("lancedb-official-list-beta", [unscoped]), /missing agentId/);
+  const unknown = join(root, "unknown.json");
+  await writeFile(unknown, '{"records":[{"id":"a","text":"one"}]}');
+  await assert.rejects(loadRecords("lancedb-official-list-beta", [unknown]), /invalid official/);
+});
+
+test("LanceDB Pro rejects unknown and count-mismatched export envelopes", async () => {
+  const root = await temporaryDirectory();
+  const unknown = join(root, "unknown.json");
+  await writeFile(unknown, '{"data":[{"id":"a","text":"one","scope":"global"}]}');
+  await assert.rejects(loadRecords("lancedb-pro", [unknown]), /unknown memory-lancedb-pro/);
+  const truncated = join(root, "truncated.json");
+  await writeFile(truncated, JSON.stringify({
+    version: "1.0",
+    count: 2,
+    memories: [{ id: "a", text: "one", scope: "global" }],
+  }));
+  await assert.rejects(loadRecords("lancedb-pro", [truncated]), /count does not match/);
 });
 
 test("Markdown and QMD preserve sections while redacting frontmatter", async () => {
@@ -206,7 +226,7 @@ test("CLI is dry-run by default and apply requires an exact approval", async () 
   const source = join(root, "input.json");
   const output = join(root, "canonical.jsonl");
   const statePath = join(root, "state.json");
-  await writeFile(source, '[{"id":"1","text":"hello"}]');
+  await writeFile(source, '[{"id":"1","text":"hello","scope":"global"}]');
   const args = ["normalize", "--adapter", "lancedb-pro", "--input", source, "--output", output];
   const stdout = capture();
   const stderr = capture();

@@ -28,7 +28,8 @@ OpenClaw Memory Migrator supplies that control plane:
 
 - Stable: version-gated memory-lancedb-pro JSON capture
 - Stable: Markdown and QMD-owned Markdown
-- Beta: captured official `memory-lancedb` `ltm list` JSON
+- Beta: official `memory-lancedb` `ltm list` JSON wrapped in the versioned
+  per-agent capture manifest
 - Target: memory-core through Markdown and official indexing
 
 Opaque database parsing, vector copying, and automatic deletion are not

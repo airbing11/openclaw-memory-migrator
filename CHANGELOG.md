@@ -11,7 +11,11 @@
   duplicate audits.
 - Added memory-core durable/daily Markdown rendering with provenance markers.
 - Added one-use, action/run-bound approval interlocks.
-- Added path portability checks and no-overwrite writes.
+- Added path portability checks, symbolic-link rejection, no-overwrite writes,
+  and atomic render-directory publication.
+- Added versioned official LanceDB list-capture manifests and Pro
+  envelope/count validation.
+- Added sanitized 1,533-record Linux dogfood evidence.
 - Added synthetic tests, bilingual documentation, market research, and launch
   drafts.
 
