@@ -18,6 +18,8 @@ an explicit, separately reviewed feature.
 - No direct writes to OpenClaw SQLite internals.
 - No vector transfer across embedding spaces.
 - No automatic deletion or mutation-based deduplication.
+- Snapshot every output ancestor and revalidate its identity immediately before
+  publishing an atomic file or render tree.
 - Stop if counts, hashes, capabilities, configuration, agents, or scopes drift.
 
 ## Export hygiene

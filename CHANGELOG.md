@@ -12,7 +12,8 @@
 - Added memory-core durable/daily Markdown rendering with provenance markers.
 - Added one-use, action/run-bound approval interlocks.
 - Added path portability checks, symbolic-link rejection, no-overwrite writes,
-  and atomic render-directory publication.
+  atomic render-directory publication, and pre-publish output-ancestor identity
+  revalidation.
 - Added versioned official LanceDB list-capture manifests and Pro
   envelope/count validation.
 - Added sanitized 1,533-record Linux dogfood evidence.

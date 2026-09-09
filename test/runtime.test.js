@@ -1,6 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mkdtemp, readFile, writeFile, mkdir, access, readdir, symlink } from "node:fs/promises";
+import {
+  mkdtemp, readFile, writeFile, mkdir, access, readdir, symlink, rename, rm,
+} from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -193,6 +195,23 @@ test("interrupted render is unpublished, cleaned, and safely restartable", async
   assert.equal(markers.length, records.length);
 });
 
+test("render fails closed when an output ancestor changes during publication", async () => {
+  const root = await temporaryDirectory();
+  const parent = join(root, "parent");
+  const displaced = join(root, "displaced-parent");
+  const output = join(parent, "rendered");
+  await mkdir(parent);
+  const records = [createMemoryRecord({ source: "x", category: "preference", text: "safe" })];
+  await assert.rejects(writeMemoryCore(records, output, {
+    async onFileWritten() {
+      await rename(parent, displaced);
+      await mkdir(parent);
+    },
+  }), /output ancestor changed during write/);
+  await assert.rejects(access(output));
+  await rm(displaced, { recursive: true });
+});
+
 test("portability preflight detects colon, backslash, traversal, files, and MEMORY.md", async () => {
   assert.ok(portabilityErrors("bad:name.json").some((error) => error.includes("colon")));
   assert.ok(portabilityErrors("folder\\file.json").some((error) => error.includes("backslash")));
@@ -213,6 +232,7 @@ test("preflight rejects symbolic-link inputs and render outputs", async (context
   const outputTarget = join(root, "output-target");
   const outputLink = join(root, "output-link");
   const parentLink = join(root, "parent-link");
+  const racedOutput = join(root, "raced-render");
   await writeFile(source, "[]");
   await mkdir(outputTarget);
   try {
@@ -231,6 +251,13 @@ test("preflight rejects symbolic-link inputs and render outputs", async (context
   assert.ok(errors.some((error) => error.includes("render output must not be a symbolic link")));
   const parentErrors = await preflightPaths([source], join(parentLink, "records.jsonl"));
   assert.ok(parentErrors.some((error) => error.includes("output parent must not be a symbolic link")));
+  const records = [createMemoryRecord({ source: "x", category: "preference", text: "safe" })];
+  await assert.rejects(writeMemoryCore(records, racedOutput, {
+    async onFileWritten() {
+      await symlink(outputTarget, racedOutput, "dir");
+    },
+  }), /render output appeared during write/);
+  await assert.rejects(access(join(outputTarget, "durable.md")));
 });
 
 test("run-state persists atomically and approvals are one-use/action/run bound", async () => {
