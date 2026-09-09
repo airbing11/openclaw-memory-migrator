@@ -11,7 +11,7 @@
 
 ## Safety
 
-- [ ] Security review covers path traversal, symlinks, secrets, subprocesses,
+- [x] Security review covers path traversal, symlinks, secrets, subprocesses,
       approval reuse, state-file permissions, and rollback.
 - [ ] Backup gate requires exit zero, `verified:true`, exact archive path, and
       SHA verification.
