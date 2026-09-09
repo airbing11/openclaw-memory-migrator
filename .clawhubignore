@@ -1,0 +1,8 @@
+.github/
+docs/*
+!docs/benchmark-methodology.md
+marketing/
+test/
+CONTRIBUTING.md
+RELEASE_CHECKLIST.md
+package-lock.json

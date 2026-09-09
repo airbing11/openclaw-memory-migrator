@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "adapter": "lancedb-official-list-beta",
+  "openclaw_version": "2026.9.3",
+  "plugin_version": "2026.9.3",
+  "agent_id": "main",
+  "captured_at": "2026-09-09T00:00:00.000Z",
+  "count": 2,
+  "records": [
+    {
+      "id": "a",
+      "text": "one",
+      "importance": 0.8,
+      "category": "fact",
+      "createdAt": 1700000000000
+    },
+    {
+      "id": "b",
+      "text": "two",
+      "importance": 0.5,
+      "category": "other",
+      "createdAt": 1700000001000
+    }
+  ]
+}

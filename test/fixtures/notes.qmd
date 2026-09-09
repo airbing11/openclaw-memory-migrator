@@ -1,0 +1,13 @@
+---
+scope: team
+date: 2026-09-08
+category: daily
+secret: hidden
+---
+# Notes
+
+## First
+Alpha
+
+## Second
+Beta
