@@ -1,0 +1,10 @@
+node_modules/
+coverage/
+.DS_Store
+.migrator-state/
+memory-export/
+run-reports/
+*.tar.gz
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm

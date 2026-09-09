@@ -1,0 +1,15 @@
+{
+  "records": [
+    {
+      "id": 7,
+      "text": "  Remember   the hatch code  ",
+      "scope": "agent",
+      "created_at": 1700000000000,
+      "category": "fact",
+      "importance": "0.8",
+      "metadata": "{\"topic\":\"ops\",\"embedding\":[0.1],\"nested\":{\"api_token\":\"not-exported\",\"safe\":true}}",
+      "vector": [1, 2, 3],
+      "password": "not-exported"
+    }
+  ]
+}
