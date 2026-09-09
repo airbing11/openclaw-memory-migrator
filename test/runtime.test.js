@@ -57,10 +57,11 @@ test("LanceDB Pro normalization strips recursive secrets and vectors with counts
 test("release fixture manifest hashes and record counts reconcile", async () => {
   const manifest = JSON.parse(await readFile(join(fixtures, "manifest.json"), "utf8"));
   assert.equal(manifest.schema_version, 1);
+  assert.equal(manifest.hash_normalization, "UTF-8 text with CRLF normalized to LF");
   for (const fixture of manifest.fixtures) {
     const path = join(fixtures, fixture.path);
-    const bytes = await readFile(path);
-    assert.equal(createHash("sha256").update(bytes).digest("hex"), fixture.sha256);
+    const normalized = (await readFile(path, "utf8")).replaceAll("\r\n", "\n");
+    assert.equal(createHash("sha256").update(normalized, "utf8").digest("hex"), fixture.sha256);
     assert.equal((await loadRecords(fixture.adapter, [path])).length, fixture.expected_records);
   }
 });
