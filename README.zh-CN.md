@@ -22,7 +22,7 @@ LanceDB 列表捕获、QMD 或 Markdown 的权威记忆迁移到 `memory-core`�
 - 生成 memory-core Markdown，但不自动改写根 `MEMORY.md`；
 - 与 run ID 绑定的生产操作批准令牌；
 - 可续跑阶段状态和回滚证据；
-- 可复现的召回基准报告；
+- 可复现的召回基准流程；
 - 不直接写 OpenClaw SQLite 内部表。
 
 ## 支持状态
@@ -67,6 +67,9 @@ node bin/openclaw-memory-migrator.js render \
 CLI 默认只做本地、非破坏性转换。生产使用前必须阅读
 [`SKILL.md`](SKILL.md)。
 
+召回对比方法见
+[`docs/benchmark-methodology.md`](docs/benchmark-methodology.md)。
+
 ## 安全模型
 
 - 仅 owner 私聊、Control UI 或本地运维终端执行
@@ -100,4 +103,5 @@ npm run check
 
 ## 许可证
 
-MIT，见 [`LICENSE`](LICENSE)。
+GitHub 源码仓库采用 MIT，见 [`LICENSE`](LICENSE)。通过 ClawHub 分发的 Skill
+副本按照 ClawHub 发布规则采用 MIT-0。

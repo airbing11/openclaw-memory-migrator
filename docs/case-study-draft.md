@@ -1,6 +1,6 @@
 # Case study draft: from LanceDB Pro to memory-core
 
-Publication status: private draft. Owner review required before release.
+Publication status: owner-approved sanitized draft.
 
 ## Situation
 

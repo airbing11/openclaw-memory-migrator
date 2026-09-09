@@ -25,7 +25,7 @@ OpenClaw Memory Migrator supplies that control plane:
 - memory-core Markdown rendering without rewriting `MEMORY.md`;
 - run-bound approval tokens for production actions;
 - resumable phase state and rollback evidence;
-- reproducible recall benchmark reports;
+- a reproducible recall benchmark workflow;
 - no direct writes to OpenClaw SQLite internals.
 
 ## Support status
@@ -72,6 +72,9 @@ node bin/openclaw-memory-migrator.js render \
 Commands default to local, non-destructive transformations. Read
 [`SKILL.md`](SKILL.md) before production use.
 
+Recall comparisons follow
+[`docs/benchmark-methodology.md`](docs/benchmark-methodology.md).
+
 ## Safety model
 
 - Owner-only execution
@@ -106,4 +109,6 @@ npm run check
 
 ## License
 
-MIT. See [`LICENSE`](LICENSE).
+The GitHub source repository is MIT licensed; see [`LICENSE`](LICENSE).
+The Skill copy distributed through ClawHub is MIT-0 under ClawHub's publishing
+terms.

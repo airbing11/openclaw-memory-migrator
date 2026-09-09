@@ -4,6 +4,11 @@
   "description": "Evidence-first memory migration toolkit for OpenClaw",
   "license": "MIT",
   "private": true,
+  "homepage": "https://github.com/airbing11/openclaw-memory-migrator#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/airbing11/openclaw-memory-migrator.git"
+  },
   "type": "module",
   "engines": {
     "node": ">=22"

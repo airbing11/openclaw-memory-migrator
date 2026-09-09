@@ -2,6 +2,13 @@
 name: openclaw-memory-migrator
 description: Safely migrates OpenClaw memory from LanceDB Pro, official LanceDB list captures, QMD, or Markdown into memory-core. Use when an owner asks to migrate, audit, deduplicate, benchmark, cut over, or roll back an OpenClaw memory backend.
 disable-model-invocation: true
+metadata:
+  openclaw:
+    emoji: "🧠"
+    requires:
+      bins:
+        - node
+        - openclaw
 ---
 
 # OpenClaw Memory Migrator
@@ -142,7 +149,8 @@ Create at least eight owner-approved queries covering:
 - channel or agent-scoped fact
 
 Record top-k source, score, latency, and expected evidence. Never index the
-evaluation report as memory.
+evaluation report as memory. Follow
+[`docs/benchmark-methodology.md`](docs/benchmark-methodology.md).
 
 ### 7. Request cutover approval
 
