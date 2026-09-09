@@ -34,7 +34,7 @@
 - [ ] Benchmark format and methodology are documented.
 - [ ] At least one independent dry run has been reviewed.
 - [ ] Case-study claims have owner approval.
-- [ ] Interruption tests prove safe restart without duplicate amplification.
+- [x] Interruption tests prove safe restart without duplicate amplification.
 - [ ] Release evidence bundle includes CI results, fixture manifest, command
       transcript, hashes, SBOM, signed tag, and rollback demonstration.
 

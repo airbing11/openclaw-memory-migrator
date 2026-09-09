@@ -167,6 +167,32 @@ test("memory-core rendering creates durable and dated files without MEMORY.md", 
   await assert.rejects(writeMemoryCore(records, join(root, "MEMORY.md")), /MEMORY\.md/);
 });
 
+test("interrupted render is unpublished, cleaned, and safely restartable", async () => {
+  const root = await temporaryDirectory();
+  const output = join(root, "interrupted-render");
+  const records = [
+    createMemoryRecord({ source: "x", category: "preference", text: "durable" }),
+    createMemoryRecord({
+      source: "x",
+      category: "daily",
+      timestamp: "2026-09-08",
+      text: "daily",
+    }),
+  ];
+  await assert.rejects(writeMemoryCore(records, output, {
+    onFileWritten({ completed }) {
+      if (completed === 1) throw new Error("simulated interruption");
+    },
+  }), /simulated interruption/);
+  await assert.rejects(access(output));
+  assert.equal((await readdir(root)).some((name) => name.startsWith(".interrupted-render.")), false);
+  assert.deepEqual(await writeMemoryCore(records, output), ["2026-09-08.md", "durable.md"]);
+  const markers = (await Promise.all(
+    (await readdir(output)).map((name) => readFile(join(output, name), "utf8")),
+  )).join("").match(/<!-- openclaw-memory-migrator /gu);
+  assert.equal(markers.length, records.length);
+});
+
 test("portability preflight detects colon, backslash, traversal, files, and MEMORY.md", async () => {
   assert.ok(portabilityErrors("bad:name.json").some((error) => error.includes("colon")));
   assert.ok(portabilityErrors("folder\\file.json").some((error) => error.includes("backslash")));
