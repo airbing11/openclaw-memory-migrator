@@ -2,10 +2,10 @@
 
 ## Code
 
-- [ ] Tests pass on supported Node versions and Windows/Linux/macOS.
+- [x] Tests pass on supported Node versions and Windows/Linux/macOS.
 - [x] Synthetic fixtures contain no real user or infrastructure data.
 - [x] Every structured adapter fails closed on unknown envelope/schema.
-- [ ] CLI help and README commands match.
+- [x] CLI help and README commands match.
 - [x] Dry-run creates no migration output.
 - [x] No operation writes OpenClaw SQLite internals.
 
@@ -32,7 +32,7 @@
 - [x] Record totals and source IDs reconcile for every fixture.
 - [x] Duplicate audit is deterministic.
 - [x] Benchmark format and methodology are documented.
-- [ ] At least one independent dry run has been reviewed.
+- [x] At least one independent dry run has been reviewed.
 - [x] Case-study claims have owner approval.
 - [x] Interruption tests prove safe restart without duplicate amplification.
 - [ ] Release evidence bundle includes CI results, fixture manifest, command
