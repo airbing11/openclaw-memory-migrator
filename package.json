@@ -1,6 +1,8 @@
 {
   "name": "openclaw-memory-migrator",
   "version": "0.1.0-rc.1",
+  "description": "Evidence-first memory migration toolkit for OpenClaw",
+  "license": "MIT",
   "private": true,
   "type": "module",
   "engines": {
