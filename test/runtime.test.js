@@ -6,6 +6,7 @@ import {
 import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { createHash } from "node:crypto";
 
 import {
   auditRecords,
@@ -50,6 +51,17 @@ test("LanceDB Pro normalization strips recursive secrets and vectors with counts
   const serialized = JSON.stringify(record);
   for (const forbidden of ["embedding", "api_token", "password", "\"vector\""]) {
     assert.equal(serialized.includes(forbidden), false);
+  }
+});
+
+test("release fixture manifest hashes and record counts reconcile", async () => {
+  const manifest = JSON.parse(await readFile(join(fixtures, "manifest.json"), "utf8"));
+  assert.equal(manifest.schema_version, 1);
+  for (const fixture of manifest.fixtures) {
+    const path = join(fixtures, fixture.path);
+    const bytes = await readFile(path);
+    assert.equal(createHash("sha256").update(bytes).digest("hex"), fixture.sha256);
+    assert.equal((await loadRecords(fixture.adapter, [path])).length, fixture.expected_records);
   }
 });
 
