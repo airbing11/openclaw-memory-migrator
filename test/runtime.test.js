@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mkdtemp, readFile, writeFile, mkdir, access } from "node:fs/promises";
+import { mkdtemp, readFile, writeFile, mkdir, access, readdir, symlink } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -142,7 +142,8 @@ test("memory-core rendering creates durable and dated files without MEMORY.md", 
   assert.match(await readFile(join(output, "durable.md"), "utf8"), /content_hash/);
   assert.match(await readFile(join(output, "2026-09-08.md"), "utf8"), /source_id/);
   assert.equal(await readFile(memory, "utf8"), "keep me\n");
-  await assert.rejects(writeMemoryCore(records, output), /overwrite existing rendered file/);
+  assert.equal((await readdir(root)).some((name) => name.startsWith(".staged-memory.")), false);
+  await assert.rejects(writeMemoryCore(records, output), /overwrite existing render output/);
   await assert.rejects(writeMemoryCore(records, join(root, "MEMORY.md")), /MEMORY\.md/);
 });
 
@@ -157,6 +158,33 @@ test("portability preflight detects colon, backslash, traversal, files, and MEMO
   assert.ok(errors.some((error) => error.includes("explicit file")));
   assert.ok(errors.some((error) => error.includes("does not exist")));
   assert.ok(errors.some((error) => error.includes("MEMORY.md")));
+});
+
+test("preflight rejects symbolic-link inputs and render outputs", async (context) => {
+  const root = await temporaryDirectory();
+  const source = join(root, "source.json");
+  const inputLink = join(root, "input-link.json");
+  const outputTarget = join(root, "output-target");
+  const outputLink = join(root, "output-link");
+  const parentLink = join(root, "parent-link");
+  await writeFile(source, "[]");
+  await mkdir(outputTarget);
+  try {
+    await symlink(source, inputLink, "file");
+    await symlink(outputTarget, outputLink, "dir");
+    await symlink(outputTarget, parentLink, "dir");
+  } catch (error) {
+    if (error.code === "EPERM" || error.code === "EACCES") {
+      context.skip("symbolic links require additional privileges on this platform");
+      return;
+    }
+    throw error;
+  }
+  const errors = await preflightPaths([inputLink], outputLink, { outputKind: "directory" });
+  assert.ok(errors.some((error) => error.includes("input must not be a symbolic link")));
+  assert.ok(errors.some((error) => error.includes("render output must not be a symbolic link")));
+  const parentErrors = await preflightPaths([source], join(parentLink, "records.jsonl"));
+  assert.ok(parentErrors.some((error) => error.includes("output parent must not be a symbolic link")));
 });
 
 test("run-state persists atomically and approvals are one-use/action/run bound", async () => {

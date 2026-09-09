@@ -21,6 +21,11 @@ Use a directory outside all indexed workspaces:
 
 Protect it as sensitive data. Canonical records can contain personal memory.
 
+The final render output directory must not already exist. The renderer builds
+all files in a private sibling directory and publishes the completed tree with
+one atomic rename. An interruption may leave an unpublished dot-prefixed
+temporary directory, but never a partially published render tree.
+
 ## Verified backup gate
 
 Prefer the installed official backup CLI and its online SQLite snapshot logic.
