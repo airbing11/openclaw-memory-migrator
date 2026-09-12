@@ -117,24 +117,40 @@ Links I would include:
 - https://github.com/airbing11/openclaw-memory-migrator
 - https://clawhub.ai/skills/memory-core-migrator
 
-## Discord public post — only after moderator approval
+## Discord `#self-promotion` — official Showcase draft
 
-**Channel:** _fill after moderator reply_
+Official intake named on 2026-09-12:
+https://docs.openclaw.ai/start/showcase
 
-OpenClaw Memory Migrator is an RC Skill/CLI for operators moving LanceDB Pro
-captures, official LanceDB list captures (beta), or Markdown/QMD into official
-`memory-core`.
+Attach a screenshot of a synthetic fixture audit, never a live Control UI.
 
-It is local-first and dry-run-first. It reconciles counts/IDs/hashes, stages
-Markdown, and requires a verified backup plus a run-bound approval before any
-production write. It does not claim lossless or one-click migration.
+**Channel:** `#self-promotion`
 
-If you can run a supported-source dry-run, please send an anonymized
-reconciliation summary through GitHub, not in this thread:
+OpenClaw Memory Migrator is a local-first RC Skill/CLI for operators moving
+LanceDB Pro captures, official LanceDB list captures (beta), or Markdown/QMD
+back to official `memory-core`.
 
+It does not copy vectors or write SQLite internals. Default is dry-run:
+normalize to inspectable JSONL, reconcile counts/IDs/hashes, stage Markdown,
+and stop until backup + a run-bound approval exist.
+
+Try the synthetic fixtures first, then file counts — not memory:
+
+https://github.com/airbing11/openclaw-memory-migrator
+https://clawhub.ai/skills/memory-core-migrator
 https://github.com/airbing11/openclaw-memory-migrator/issues/new?template=dry-run-report.yml
 
-Please do not paste memory text, exports, or host details here.
+Please do not paste exports, hostnames, or raw memory here.
+
+## X `@openclaw` — official Showcase draft
+
+Proof-first path from LanceDB Pro / Markdown back to official OpenClaw
+`memory-core`. Local dry-run, count reconciliation, no vector copy.
+
+Repo: https://github.com/airbing11/openclaw-memory-migrator
+ClawHub: https://clawhub.ai/skills/memory-core-migrator
+
+Looking for anonymized dry-run counts, not installs. @openclaw
 
 ## Show HN
 
@@ -255,13 +271,13 @@ Reviewed 2026-09-09 against the fact card, privacy redlines, and
 
 | Draft | Ready to send? | Findings |
 | --- | --- | --- |
-| GitHub tester call | Yes, after Issue Forms are on `main` | Names supported adapters, export cap, single CTA, no banned claims. |
-| Discord moderator request | Hold for maintainer approval | Asks permission first, offers to stay silent, no recruiting in DMs. Still a community message, so it needs its own approval. |
-| Discord public post | No | Channel is blank until a moderator replies. |
-| Show HN | No | Official rules allow early work, but this launch plan waits for one reviewed external dry-run and author availability. |
-| V2EX | No | Outline only. Publishing the outline verbatim would violate V2EX's AI-content rule. |
-| X / LinkedIn / WeChat | No | Week 4 amplification; would be same-day cross-posting if sent now. |
-| ClawHub listing | Already published | Left unchanged; listing is not a community post. |
+| GitHub tester call | Live | Issue #2 and Discussion #3 exist; 0 comments as of 2026-09-12. |
+| Discord `#self-promotion` | Hold for screenshot + approval | Official Showcase channel. Needs a synthetic audit image. |
+| X `@openclaw` | Hold for same screenshot + approval | Same Showcase intake. Do not thread-support. |
+| Discord other channels | No | Still need a named channel from a moderator. |
+| Show HN | No | Wait until the author can stay in the thread. |
+| V2EX | No | Outline only. Publishing it verbatim would be AI content. |
+| ClawHub listing | Already published | Leave support on GitHub. |
 
 Remaining risks if the Discord request is approved next:
 

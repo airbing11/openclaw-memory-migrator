@@ -1,6 +1,7 @@
 # Community launch plan
 
 Research date: 2026-09-09
+Last review: 2026-09-12
 Status: drafts only. Every external post still needs a separate maintainer
 approval. Do not publish from this document.
 
@@ -25,6 +26,37 @@ Do not optimize the first wave for installs, stars, or virality.
 | ClawHub `memory-core-migrator` installs | 0 |
 | GitHub Discussions | disabled on this repository and on `openclaw/openclaw` |
 | Issues | enabled; use Issue Forms as the only public intake |
+
+## Funnel review (2026-09-12)
+
+Observed after three days of public listing, with GitHub tester posts already
+live and no Discord / V2EX / Show HN posts sent:
+
+| Metric | 2026-09-09 | 2026-09-11 | 2026-09-12 |
+| --- | --- | --- | --- |
+| ClawHub downloads | 15 page / 0 API | 97 | 105 |
+| ClawHub installs | 0 | 2 | 2 |
+| ClawHub comments | 0 | 0 | 0 |
+| GitHub stars | 0 | 1 | 1 |
+| Issue #2 comments | 0 | 0 | 0 |
+| Discussion #3 comments | 0 | 0 | 0 |
+| Dry-run reports | 0 | 0 | 0 |
+
+Diagnosis:
+
+1. ClawHub discovery works. Downloads keep rising without outbound posts.
+2. Install telemetry stays at 2. Most archive fetches are inspect, crawl, or
+   unsigned-in installs.
+3. Owned GitHub posts have almost no inbound traffic. They cannot recruit
+   testers until a channel with operators points here.
+4. The original README assumed the reader already had `export/main.json`. That
+   is too high a first step for a ClawHub visitor.
+5. Official Showcase now names `#self-promotion` and `@openclaw` as the
+   submission path. Waiting for a moderator DM is no longer required for that
+   specific channel:
+   https://docs.openclaw.ai/start/showcase
+6. Showcase entries that get listed are short, concrete, and include a demo or
+   screenshot. Memory workflows are already an official category.
 
 ## Fact card
 
@@ -105,12 +137,13 @@ the gap is explicit.
 
 - Official invite referenced by OpenClaw README: https://discord.gg/clawd
 - Official community policy repo: https://github.com/openclaw/community
-- Published Community Team Guide asks helpers to keep channels focused on
-  OpenClaw and to be helpful, but it does not publish a self-promotion policy
-  for third-party projects:
-  https://github.com/openclaw/community/blob/main/discord.md
-- Therefore Discord posting requires moderator confirmation of channel and
-  format before any public message.
+- Official Showcase docs, checked 2026-09-12, invite project submissions in
+  `#self-promotion` or by tagging [@openclaw](https://x.com/openclaw):
+  https://docs.openclaw.ai/start/showcase
+- Required payload: what it does, repo or demo link, and a screenshot if
+  available. Standout projects are copied onto the Showcase page.
+- Other Discord channels still need moderator confirmation. Do not recruit in
+  DMs or setup-help channels.
 
 ### Hacker News Show HN
 
@@ -157,12 +190,14 @@ These are strategy, not platform facts.
 
 | Priority | Channel | Why | First action |
 | --- | --- | --- | --- |
-| P0 | GitHub Issues + README | Only owned, searchable intake | Publish Issue Forms; keep support here |
-| P0 | ClawHub listing | Official skill discovery | Point testers here to install, not to file support |
-| P1 | OpenClaw Discord | Official setup community | Ask moderators first; post once if allowed |
-| P2 | V2EX | Evidenced Chinese OpenClaw discussion | Maintainer rewrites a first-hand post from the outline |
-| P3 | Show HN | Try-it-now audience after docs settle | One post after first dry-run feedback |
-| P4 | X / LinkedIn / WeChat | Amplification only | Link back to GitHub; do not support in-thread |
+| P0 | Fixture dry-run in README | Converts ClawHub browsers without live memory | Keep the synthetic two-minute path first |
+| P0 | GitHub Issues + README | Only owned, searchable intake | Keep support here |
+| P0 | ClawHub listing | Official skill discovery already producing downloads | Point to fixture dry-run, then Issue Form |
+| P1 | Discord `#self-promotion` | Official Showcase intake, checked 2026-09-12 | One post with synthetic screenshot |
+| P1 | X `@openclaw` | Same official Showcase intake | One factual pointer, not a thread |
+| P2 | V2EX | Evidenced Chinese OpenClaw discussion | Maintainer rewrites a first-hand post |
+| P3 | Show HN | Broader try-it audience | After author can stay in-thread |
+| P4 | Awesome lists / reply-only | Discovery without new promo issues | PR only if the list accepts memory tools |
 | Hold | Reddit, 掘金, 知乎, Bilibili | Rule or audience evidence incomplete | Re-check before any post |
 
 ## Cadence
@@ -180,15 +215,15 @@ flowchart LR
 ```
 
 1. Week 0 — own the intake. Issue Forms, fact card, privacy redlines, and
-   approval checklist must exist before any outreach.
-2. Week 1 — OpenClaw core. Send one Discord moderator request. If approved,
-   post one technical tester call and route replies to GitHub.
-3. Week 2 — Chinese verification. Maintainer writes a first-hand V2EX post
-   from the outline. Long-form 掘金/知乎 waits for a public sanitized case.
-4. Week 3 — international. One Show HN after README/FAQ gaps from week 1–2 are
-   closed. Author stays present for the thread.
-5. Week 4 — amplification. Short X/LinkedIn or WeChat pointers. Bilibili only
-   if a synthetic demo is recorded.
+   approval checklist must exist before any outreach. Done.
+2. Week 1 — conversion. Put a synthetic fixture dry-run above the live-export
+   quick start so a ClawHub visitor can finish without private memory.
+3. Week 2 — official Showcase. One `#self-promotion` post and one X post that
+   tags `@openclaw`. Use a synthetic audit screenshot. Route replies to GitHub.
+4. Week 3 — Chinese verification. Maintainer writes a first-hand V2EX post
+   from the outline. Long-form 掘金/知乎 still waits for a public sanitized case.
+5. Week 4 — Show HN only if the author can stay in the thread. Do not treat
+   Show HN as the first operator channel.
 
 Do not same-day cross-post the same text. Space posts and keep one support
 inbox.
@@ -239,8 +274,10 @@ Copy a row into the latest approved-post note. Do not invent metrics.
 
 | Date | Channel | Draft file section | Approver | Result | Qualified reports | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2026-09-09 | GitHub Issue Forms | intake templates | pending | prepared | 0 | Forms not yet used |
-| 2026-09-09 | Discord moderator request | First-wave review | pending | draft | 0 | Do not send until approved |
+| 2026-09-09 | GitHub Issue Forms | intake templates | done | live | 0 | Forms unused so far |
+| 2026-09-09 | GitHub Issue #2 / Discussion #3 | GitHub tester call | done | live | 0 | 2 reactions, 0 comments |
+| 2026-09-12 | Discord `#self-promotion` | Official Showcase draft | pending | draft | 0 | Official docs now name this channel |
+| 2026-09-12 | X `@openclaw` | Official Showcase draft | pending | draft | 0 | Same Showcase intake |
 | | V2EX | Chinese outline | | held | | Maintainer must rewrite |
 | | Show HN | Show HN | | held | | After first dry-run feedback |
 | | X / LinkedIn | Amplification | | held | | Week 4 only |
@@ -255,6 +292,7 @@ Copy a row into the latest approved-post note. Do not invent metrics.
 - https://github.com/openclaw/community
 - https://github.com/openclaw/community/blob/main/discord.md
 - https://discord.gg/clawd
+- https://docs.openclaw.ai/start/showcase
 - https://news.ycombinator.com/showhn.html
 - https://news.ycombinator.com/item?id=47309953
 - https://www.v2ex.com/about

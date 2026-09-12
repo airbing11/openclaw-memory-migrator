@@ -43,9 +43,41 @@ Important: memory-lancedb-pro v1.1.0-beta.10 `export` is capped at 1,000
 records. The operator workflow must compare every scoped export with fresh
 stats and paginate `list --offset` when required.
 
-## Quick start
+## Try with fixtures first
 
-Requires Node.js 22+. There are no runtime dependencies.
+Requires Node.js 22+. There are no runtime dependencies. This path uses
+synthetic fixtures only. Do not substitute a live export here.
+
+```bash
+node bin/openclaw-memory-migrator.js --help
+mkdir -p canonical reports staged-memory/imports
+node bin/openclaw-memory-migrator.js preflight \
+  --input test/fixtures/lancedb-pro.json \
+  --output canonical/memory-records.jsonl
+node bin/openclaw-memory-migrator.js normalize \
+  --adapter lancedb-pro \
+  --input test/fixtures/lancedb-pro.json \
+  --output canonical/memory-records.jsonl
+node bin/openclaw-memory-migrator.js audit \
+  --adapter lancedb-pro \
+  --input test/fixtures/lancedb-pro.json \
+  --output reports/audit.json
+node bin/openclaw-memory-migrator.js render \
+  --adapter lancedb-pro \
+  --input test/fixtures/lancedb-pro.json \
+  --output staged-memory/imports/lancedb-pro
+```
+
+Install from ClawHub after the fixture dry-run succeeds:
+
+```bash
+openclaw skills install memory-core-migrator
+```
+
+Then file counts, not memory, through the
+[dry-run Issue Form](https://github.com/airbing11/openclaw-memory-migrator/issues/new?template=dry-run-report.yml).
+
+## Quick start with your own export
 
 ```bash
 node bin/openclaw-memory-migrator.js --help

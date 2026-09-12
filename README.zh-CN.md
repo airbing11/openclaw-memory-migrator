@@ -38,9 +38,41 @@ LanceDB 列表捕获、QMD 或 Markdown 的权威记忆迁移到 `memory-core`�
 重要：memory-lancedb-pro v1.1.0-beta.10 的 `export` 最多返回 1,000 条。
 操作流程必须按 scope 与最新 stats 核对，超量时通过 `list --offset` 分页。
 
-## 快速开始
+## 先用合成 fixture 试跑
 
-需要 Node.js 22+，无运行时第三方依赖。
+需要 Node.js 22+，无运行时依赖。这条路径只用仓库内合成数据，不要换成真实导出。
+
+```bash
+node bin/openclaw-memory-migrator.js --help
+mkdir -p canonical reports staged-memory/imports
+node bin/openclaw-memory-migrator.js preflight \
+  --input test/fixtures/lancedb-pro.json \
+  --output canonical/memory-records.jsonl
+node bin/openclaw-memory-migrator.js normalize \
+  --adapter lancedb-pro \
+  --input test/fixtures/lancedb-pro.json \
+  --output canonical/memory-records.jsonl
+node bin/openclaw-memory-migrator.js audit \
+  --adapter lancedb-pro \
+  --input test/fixtures/lancedb-pro.json \
+  --output reports/audit.json
+node bin/openclaw-memory-migrator.js render \
+  --adapter lancedb-pro \
+  --input test/fixtures/lancedb-pro.json \
+  --output staged-memory/imports/lancedb-pro
+```
+
+fixture dry-run 通过后再从 ClawHub 安装：
+
+```bash
+openclaw skills install memory-core-migrator
+```
+
+然后用
+[脱敏 dry-run 表单](https://github.com/airbing11/openclaw-memory-migrator/issues/new?template=dry-run-report.yml)
+提交计数，不要提交记忆正文。
+
+## 使用自己的导出
 
 ```bash
 node bin/openclaw-memory-migrator.js --help
