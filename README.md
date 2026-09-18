@@ -6,6 +6,11 @@ A safety-gated OpenClaw Skill and CLI toolkit for moving authoritative memory
 from LanceDB Pro, official LanceDB list captures, QMD, or Markdown into
 `memory-core`.
 
+Memory migrations can truncate exports, miss scopes, duplicate content, and
+leave no proof that recall or rollback still works. This toolkit makes those
+risks visible with dry-run manifests, count/ID/hash reconciliation, reviewable
+Markdown staging, and approval-gated cutover.
+
 [中文说明](README.zh-CN.md)
 
 ## Why
@@ -108,6 +113,7 @@ Commands default to local, non-destructive transformations. Read
 
 Recall comparisons follow
 [`docs/benchmark-methodology.md`](docs/benchmark-methodology.md).
+See also the [FAQ](docs/faq.md) and [operator recipes](docs/recipes.md).
 
 ## Safety model
 
@@ -129,10 +135,13 @@ export first. Production cutover remains operator-reviewed.
 
 ## Evidence, not promises
 
-The originating workflow migrated more than 1,500 records through a staged
-Markdown import, used an eight-query recall gate, and completed a seven-day
-soak. That case is a development proof point, not a guarantee for other
-installations. A publishable anonymized case study requires owner approval.
+An anonymized run reconciled 1,533 exported and canonical records and produced
+29 staged Markdown files. Its 8/8 Hit@5 result was a post-migration health
+check, not a paired before/after benchmark; its retained recovery artifacts
+proved rollback readiness, not a rollback rehearsal. The approximate audit
+also stopped at 10,000 of 1,174,211 candidate pairs. See the bounded
+[dogfood evidence](docs/dogfood-2026-09-18.md); none of these observations is a
+guarantee for other installations.
 
 ## Feedback
 

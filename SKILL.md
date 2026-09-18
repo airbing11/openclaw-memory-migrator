@@ -40,6 +40,8 @@ from a third-party memory backend back to OpenClaw's official memory-core.
 - Unsupported: direct opaque LanceDB database parsing, vector transfer, arbitrary backend-to-backend sync.
 
 Read [references/compatibility.md](references/compatibility.md) before selecting an adapter.
+For operator questions and copyable workflows, see
+[docs/faq.md](docs/faq.md) and [docs/recipes.md](docs/recipes.md).
 
 ## Workflow
 
@@ -88,6 +90,7 @@ node bin/openclaw-memory-migrator.js normalize \
   --adapter lancedb-pro \
   --input export/global.json \
   --input export/main.json \
+  --expected-total <trusted-snapshot-total> \
   --output canonical/memory-records.jsonl
 ```
 
@@ -112,6 +115,7 @@ the versioned `lancedb-official-list-beta` manifest documented in
 node bin/openclaw-memory-migrator.js audit \
   --adapter canonical-v1 \
   --input canonical/memory-records.jsonl \
+  --max-comparisons 10000 \
   --output reports/audit.json
 ```
 
@@ -122,6 +126,12 @@ Require:
 - no silent empty-text drops;
 - exact duplicates and approximate duplicate groups are reported;
 - secret-like metadata is rejected or redacted.
+
+Always inspect `completeness`, `approximate_comparisons.coverage`, and
+`warnings`. A truncated approximate scan is not a complete near-duplicate
+conclusion. Use `--require-complete-approximate` when completeness is a gate.
+Normal JSON remains on stdout; warnings and errors remain on stderr. Callers
+that need structured errors can add `--json-errors`.
 
 Deduplication is report-only in v0.1. Never delete automatically.
 
@@ -203,6 +213,7 @@ Every phase report includes:
 - source/export/canonical/rendered counts
 - duplicate and rejected-record counts
 - slot, indexing, channel, and recall status
+- rollback readiness, and separately whether a rollback rehearsal was executed
 - exact next approval or blocker
 
 Never describe a partial or unverified result as successful.

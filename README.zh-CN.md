@@ -5,6 +5,10 @@
 一套带安全闸门的 OpenClaw Skill 与 CLI 工具，将 LanceDB Pro、官方
 LanceDB 列表捕获、QMD 或 Markdown 的权威记忆迁移到 `memory-core`。
 
+记忆迁移可能遭遇导出截断、scope 遗漏、内容重复，以及召回和回滚无法验证。
+本工具通过 dry-run 清单、数量/ID/哈希对账、可审阅 Markdown 暂存和批准闸门，
+让这些风险在切槽前暴露出来。
+
 [English](README.md)
 
 ## 为什么需要它
@@ -103,6 +107,7 @@ CLI 默认只做本地、非破坏性转换。生产使用前必须阅读
 
 召回对比方法见
 [`docs/benchmark-methodology.md`](docs/benchmark-methodology.md)。
+另见[常见问题](docs/faq.zh-CN.md)和[场景操作手册](docs/recipes.zh-CN.md)。
 
 ## 安全模型
 
@@ -124,9 +129,12 @@ CLI 默认只做本地、非破坏性转换。生产使用前必须阅读
 
 ## 真实案例边界
 
-最初工作流曾迁移 1,500 余条记录，使用八题召回门槛并完成七天浸泡。该案例
-用于证明流程可行，不代表对其他安装环境作成功保证；公开匿名案例前仍需 owner
-批准。
+一次脱敏运行对齐了 1,533 条导出与规范记录，并生成 29 个暂存 Markdown 文件。
+其中 8/8 Hit@5 只是迁移后健康检查，不是成对前后基准；保留恢复产物只证明
+rollback readiness，不代表执行过 rollback rehearsal。近似审计也只完成
+10,000 / 1,174,211 个候选对。详见有明确证据边界的
+[dogfood 记录](docs/dogfood-2026-09-18.md)；这些观测不保证其他安装环境获得
+相同结果。
 
 ## 反馈
 

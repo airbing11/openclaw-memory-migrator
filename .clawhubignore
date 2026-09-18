@@ -1,7 +1,13 @@
 .github/
 docs/*
 !docs/benchmark-methodology.md
+!docs/dogfood-2026-09-18.md
+!docs/faq.md
+!docs/faq.zh-CN.md
+!docs/recipes.md
+!docs/recipes.zh-CN.md
 marketing/
+scripts/
 test/
 CONTRIBUTING.md
 RELEASE_CHECKLIST.md

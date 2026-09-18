@@ -12,6 +12,7 @@ import {
   auditRecords,
   createMemoryRecord,
   loadRecords,
+  loadRecordsDetailed,
   normalizeTimestamp,
   portabilityErrors,
   preflightPaths,
@@ -52,6 +53,30 @@ test("LanceDB Pro normalization strips recursive secrets and vectors with counts
   for (const forbidden of ["embedding", "api_token", "password", "\"vector\""]) {
     assert.equal(serialized.includes(forbidden), false);
   }
+});
+
+test("detailed loading reports per-input accounting and redaction totals", async () => {
+  const loaded = await loadRecordsDetailed("lancedb-pro", [join(fixtures, "lancedb-pro.json")]);
+  assert.equal(loaded.records.length, 1);
+  assert.deepEqual(loaded.summary.totals, {
+    inputs: 1,
+    envelope_total: null,
+    parsed: 1,
+    accepted: 1,
+    skipped: 0,
+    rejected: 0,
+    redactions: { secret_keys: 2, vector_keys: 2, total: 4 },
+  });
+  assert.equal(loaded.summary.inputs[0].accepted, 1);
+  assert.deepEqual(await loadRecords("lancedb-pro", [join(fixtures, "lancedb-pro.json")]), loaded.records);
+
+  const root = await temporaryDirectory();
+  const markdown = join(root, "empty-section.md");
+  await writeFile(markdown, "# Title\n\n## Empty\n\n## Kept\nvalue\n");
+  const markdownLoaded = await loadRecordsDetailed("markdown", [markdown]);
+  assert.equal(markdownLoaded.summary.totals.parsed, 3);
+  assert.equal(markdownLoaded.summary.totals.accepted, 2);
+  assert.equal(markdownLoaded.summary.totals.skipped, 1);
 });
 
 test("release fixture manifest hashes and record counts reconcile", async () => {
@@ -134,7 +159,31 @@ test("audit is deterministic and bounds approximate comparisons", () => {
   assert.deepEqual(report.exact_text_duplicates, [[0, 1]]);
   assert.equal(report.approximate_comparisons.performed, 2);
   assert.equal(report.approximate_comparisons.truncated, true);
+  assert.equal(report.approximate_comparisons.total_candidates, 5);
+  assert.equal(report.approximate_comparisons.coverage, 0.4);
+  assert.deepEqual(report.completeness, {
+    exact_audit_complete: true,
+    approximate_audit_complete: false,
+  });
+  assert.deepEqual(report.coverage, { approximate_comparisons: 0.4 });
+  assert.equal(report.warnings.length, 1);
   assert.deepEqual(report, auditRecords(records, { approximateThreshold: 0.9, maxComparisons: 2 }));
+});
+
+test("audit coverage is correct for a synthetic 1,533-record run", () => {
+  const records = Array.from({ length: 1_533 }, (_, index) => createMemoryRecord({
+    source: "synthetic",
+    source_id: String(index),
+    text: `synthetic record ${index}`,
+  }));
+  const report = auditRecords(records, { maxComparisons: 10_000 });
+  assert.equal(report.approximate_comparisons.total_candidates, 1_174_278);
+  assert.equal(report.approximate_comparisons.performed, 10_000);
+  assert.equal(
+    report.approximate_comparisons.coverage,
+    Number((10_000 / 1_174_278).toFixed(6)),
+  );
+  assert.equal(report.completeness.approximate_audit_complete, false);
 });
 
 test("JSONL writer emits canonical records", async () => {
@@ -309,10 +358,63 @@ test("CLI is dry-run by default and apply requires an exact approval", async () 
   assert.equal(JSON.parse((await readFile(output, "utf8")).trim()).schema_version, 1);
 });
 
+test("CLI exact totals and structured errors keep stdout clean", async () => {
+  const root = await temporaryDirectory();
+  const source = join(root, "input.json");
+  const output = join(root, "canonical.jsonl");
+  await writeFile(source, '[{"id":"1","text":"hello","scope":"global"}]');
+  const stdout = capture();
+  const stderr = capture();
+  const code = await main([
+    "normalize",
+    "--adapter", "lancedb-pro",
+    "--input", source,
+    "--expected-total", "2",
+    "--output", output,
+    "--json-errors",
+  ], { stdout: stdout.stream, stderr: stderr.stream });
+  assert.equal(code, 2);
+  assert.equal(stdout.value, "");
+  assert.deepEqual(JSON.parse(stderr.value), {
+    code: "COUNT_MISMATCH",
+    message: "expected total 2, but accepted 1 records",
+    next_action: "Re-export or provide the exact expected count from a trusted snapshot, then retry.",
+    details: { expected_total: 2, accepted: 1 },
+  });
+  await assert.rejects(access(output));
+});
+
+test("CLI warns on truncated audit and strict mode exits 2", async () => {
+  const root = await temporaryDirectory();
+  const source = join(root, "input.json");
+  await writeFile(source, JSON.stringify([
+    { id: "1", text: "first memory", scope: "global" },
+    { id: "2", text: "second memory", scope: "global" },
+    { id: "3", text: "third memory", scope: "global" },
+  ]));
+  const stdout = capture();
+  const stderr = capture();
+  const code = await main([
+    "audit",
+    "--adapter", "lancedb-pro",
+    "--input", source,
+    "--max-comparisons", "1",
+    "--require-complete-approximate",
+    "--json-errors",
+  ], { stdout: stdout.stream, stderr: stderr.stream });
+  assert.equal(code, 2);
+  const report = JSON.parse(stdout.value);
+  assert.equal(report.approximate_comparisons.truncated, true);
+  assert.equal(report.approximate_comparisons.coverage, 0.333333);
+  const messages = stderr.value.trim().split("\n").map((line) => JSON.parse(line));
+  assert.equal(messages[0].code, "AUDIT_TRUNCATED_WARNING");
+  assert.equal(messages[1].code, "AUDIT_INCOMPLETE");
+});
+
 test("CLI help and version are successful and side-effect free", async () => {
   for (const [args, expected] of [
     [["--help"], /Usage: openclaw-memory-migrator/],
-    [["--version"], /^0\.1\.0-rc\.1/m],
+    [["--version"], /^0\.1\.0-rc\.2/m],
   ]) {
     const stdout = capture();
     const stderr = capture();

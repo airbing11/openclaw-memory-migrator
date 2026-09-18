@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.1.0-rc.2
+
+- Added complete/incomplete approximate-audit reporting, coverage, stderr
+  warnings, and an opt-in strict completeness gate.
+- Added per-input and aggregate parsed/accepted/skipped/rejected, envelope, and
+  redaction accounting while preserving `loadRecords()`.
+- Added exact `--expected-total` reconciliation.
+- Added structured errors with actionable recovery guidance and clean
+  stdout/stderr separation.
+- Added bilingual FAQ and operator recipes plus bounded 2026-09-18 dogfood
+  evidence.
+- Clarified rollback readiness versus rehearsal and target health checks versus
+  paired recall baselines.
+- Added release tests and package checks for reviewable, unminified source.
+
 ## 0.1.0-rc.1
 
 - Added zero-dependency Node.js CLI.
