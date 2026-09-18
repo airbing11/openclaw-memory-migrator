@@ -3,6 +3,10 @@
 Use this workflow to compare retrieval before and after a memory migration. It
 does not claim that migration improves recall.
 
+A target-only query run is a **post-migration health check**, not a paired
+benchmark. Label it that way unless the same frozen evaluation set was run
+against the source before migration under a recorded, comparable identity.
+
 ## Evaluation set
 
 Store the evaluation set outside every indexed workspace. Use JSONL with one
@@ -61,3 +65,7 @@ Define acceptance before cutover. Recommended minimum:
 
 Passing this benchmark is evidence for one run and one evaluation set, not a
 general recall-improvement claim.
+
+If the source baseline is missing, publish target Hit@K, MRR, and latency only
+as health observations. Do not calculate a delta, claim non-regression, or
+reconstruct the source query set from memory after cutover.

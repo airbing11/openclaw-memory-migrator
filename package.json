@@ -1,6 +1,6 @@
 {
   "name": "openclaw-memory-migrator",
-  "version": "0.1.0-rc.1",
+  "version": "0.1.0-rc.2",
   "description": "Evidence-first memory migration toolkit for OpenClaw",
   "license": "MIT",
   "private": true,
@@ -20,18 +20,21 @@
     ".": "./lib/index.js",
     "./core": "./lib/core.js",
     "./adapters": "./lib/adapters.js",
+    "./errors": "./lib/errors.js",
     "./operations": "./lib/operations.js",
     "./safety": "./lib/safety.js",
     "./state": "./lib/state.js"
   },
   "scripts": {
     "test": "node --test",
-    "check": "node --check bin/openclaw-memory-migrator.js && node --check lib/cli.js && node --check lib/core.js && node --check lib/adapters.js && node --check lib/operations.js && node --check lib/safety.js && node --check lib/state.js"
+    "check": "node --check bin/openclaw-memory-migrator.js && node --check lib/cli.js && node --check lib/core.js && node --check lib/adapters.js && node --check lib/errors.js && node --check lib/operations.js && node --check lib/safety.js && node --check lib/state.js && npm run verify:package",
+    "verify:package": "node scripts/verify-package.mjs"
   },
   "files": [
     "bin",
     "lib",
     "schemas",
+    "docs",
     "SKILL.md",
     "references",
     "README.md",

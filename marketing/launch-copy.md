@@ -9,7 +9,7 @@ Canonical facts, privacy redlines, and cadence live in
 ## Shared links
 
 - GitHub: https://github.com/airbing11/openclaw-memory-migrator
-- RC: https://github.com/airbing11/openclaw-memory-migrator/releases/tag/v0.1.0-rc.1
+- RC: https://github.com/airbing11/openclaw-memory-migrator/releases/tag/v0.1.0-rc.2
 - ClawHub: https://clawhub.ai/skills/memory-core-migrator
 - Dry-run form: https://github.com/airbing11/openclaw-memory-migrator/issues/new?template=dry-run-report.yml
 - Compatibility form: https://github.com/airbing11/openclaw-memory-migrator/issues/new?template=compatibility-bug.yml

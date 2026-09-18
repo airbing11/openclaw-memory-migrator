@@ -111,6 +111,47 @@ body:
       placeholder: "exact=3, approximate=1"
     validations:
       required: false
+  - type: dropdown
+    id: approximate_audit
+    attributes:
+      label: Approximate duplicate audit completeness
+      options:
+        - Complete (performed equals total candidates)
+        - Truncated (include sanitized performed / total below)
+        - Not run
+        - Unknown
+    validations:
+      required: true
+  - type: input
+    id: approximate_coverage
+    attributes:
+      label: Approximate comparisons
+      description: Counts only, for example "10000 / 1174211"; do not include memory text.
+      placeholder: performed / total_candidates
+    validations:
+      required: false
+  - type: dropdown
+    id: recall_evidence
+    attributes:
+      label: Recall evidence timing
+      options:
+        - Paired baseline captured before and after migration
+        - Post-migration health check only
+        - Baseline planned but not run
+        - Not applicable
+    validations:
+      required: true
+  - type: dropdown
+    id: rollback_evidence
+    attributes:
+      label: Rollback evidence
+      options:
+        - Readiness verified; rehearsal not executed
+        - Rehearsal executed and verified
+        - Readiness incomplete
+        - Not assessed
+    validations:
+      required: true
   - type: textarea
     id: outcome
     attributes:

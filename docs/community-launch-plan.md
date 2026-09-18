@@ -81,7 +81,7 @@ Use this card in every post. Do not invent additional claims.
   `list --offset` when required.
 - Canonical links:
   - GitHub: https://github.com/airbing11/openclaw-memory-migrator
-  - Release: https://github.com/airbing11/openclaw-memory-migrator/releases/tag/v0.1.0-rc.1
+  - Release: https://github.com/airbing11/openclaw-memory-migrator/releases/tag/v0.1.0-rc.2
   - ClawHub: https://clawhub.ai/skills/memory-core-migrator
   - Dry-run form: https://github.com/airbing11/openclaw-memory-migrator/issues/new?template=dry-run-report.yml
   - Compatibility form: https://github.com/airbing11/openclaw-memory-migrator/issues/new?template=compatibility-bug.yml
@@ -285,7 +285,7 @@ Copy a row into the latest approved-post note. Do not invent metrics.
 ## Sources
 
 - https://github.com/airbing11/openclaw-memory-migrator
-- https://github.com/airbing11/openclaw-memory-migrator/releases/tag/v0.1.0-rc.1
+- https://github.com/airbing11/openclaw-memory-migrator/releases/tag/v0.1.0-rc.2
 - https://clawhub.ai/skills/memory-core-migrator
 - https://docs.openclaw.ai/clawhub
 - https://github.com/openclaw/openclaw

@@ -94,6 +94,12 @@ After changing the slot, verify in this order:
 6. per-agent indexed files/chunks;
 7. baseline recall and source-only probes.
 
+When text and machine-readable memory status disagree during an indexing
+debounce window, preserve both observations, wait for the documented quiet
+period, and use the installed version's settled machine-readable status for
+automation. Treat this as an upstream status-interface limitation, not proof
+that the migrator changed the index incorrectly.
+
 Do not use `memory reset`, delete SQLite, or apply promotion as a generic fix.
 
 ## Rollback
@@ -107,6 +113,11 @@ Prepare rollback before cutover:
 - source stats command and expected counts;
 - baseline queries;
 - long-term memory files that promotion could modify.
+
+This checklist establishes **rollback readiness** only. Report a **rollback
+rehearsal** only when the restore, restart, source-count validation, and recall
+checks below were actually executed. Never infer a rehearsal from the presence
+of backups or a plausible recovery path.
 
 Rollback restores the configuration/slot and source writer, restarts through
 the service owner, verifies source counts, then reruns the baseline. Preserve

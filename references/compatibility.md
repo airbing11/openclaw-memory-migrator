@@ -12,11 +12,16 @@ Status: stable for version-gated JSON capture.
 - Read `memory-pro export --help` before composing commands.
 - Export every non-empty scope independently.
 - `memory-lancedb-pro` v1.1.0-beta.10 export fetches at most 1,000 rows.
+- v1.1.0-beta.11 dogfooding still required separate operations per scope; no
+  verified `--all-scopes` export capability was available.
 - If a scope exceeds the installed export limit, paginate
   `memory-pro list --scope <scope> --limit <n> --offset <n> --json` and wrap
   the pages in an adapter-owned manifest. Do not call that artifact an official
   plugin export.
 - Reconcile export totals against a fresh stats snapshot.
+- Use the migrator's `--expected-total` for exact accounting. A live-write
+  difference of ±1 requires before/after snapshot evidence; it is not an
+  automatic tolerance.
 - Preserve source IDs, scope, category, importance, timestamps, and metadata.
 - In v1.1.0-beta.10, `metadata` is a JSON string and timestamp is epoch
   milliseconds. Invalid metadata is a hard error, not a silent empty object.
@@ -51,6 +56,10 @@ The manifest is required because `ltm list` records do not include the agent
 ID. A raw array is accepted only when every record has an explicit `agentId`.
 Opaque database parsing is deliberately unsupported because schema and
 embedding storage can change.
+
+The source and OpenClaw CLIs may emit plugin warnings on stderr. Do not merge
+stderr into stdout before parsing JSON. This project keeps its own streams
+separate but does not claim to change upstream output behavior.
 
 Verified reference:
 [`memory-lancedb` CLI at 1391f7c](https://github.com/openclaw/openclaw/blob/1391f7cd2d40ab5bbcf2f5f831d3a64f520e72d7/extensions/memory-lancedb/memory-cli.ts#L107-L233).
@@ -114,3 +123,7 @@ Record the following in every run:
 A version is promoted from beta to stable only after synthetic tests and at
 least two independent real-world dry runs complete without undocumented schema
 assumptions.
+
+See the bounded, anonymized evidence from
+[2026-09-18](../docs/dogfood-2026-09-18.md); it records observed behavior, not
+a support guarantee for every version or installation.
