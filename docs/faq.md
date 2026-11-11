@@ -7,6 +7,27 @@ Current plugin CLIs may require one export per scope and may cap exports at
 1,000 records. Discover all scopes, capture each one, and pass every file with
 `--input`. Automatic `--all-scopes` orchestration is deferred to v0.2.0.
 
+## Why is `--dry-run` optional if docs mention it?
+
+Commands are already dry-run unless `--apply` is present. `--dry-run` is an
+explicit alias for that default and cannot be combined with `--apply`. Prefer
+including `--dry-run` in shared recipes so operators do not have to remember
+the implicit default.
+
+## Where is the CLI after a ClawHub install?
+
+Install with `openclaw skills install memory-core-migrator`, then resolve the
+skill directory via `openclaw skills info memory-core-migrator --json` and run
+`node <skill-dir>/bin/openclaw-memory-migrator.js`. The ClawHub slug and the
+repository Skill id differ only in naming.
+
+## Why does `openclaw ltm` fail on my host?
+
+`ltm` is registered by the installed `@openclaw/memory-lancedb` plugin. A bare
+OpenClaw core install may report an unknown command. Install or enable the
+official LanceDB plugin before capturing list JSON for the
+`lancedb-official-list-beta` adapter.
+
 ## How do I know an approximate duplicate audit is complete?
 
 Read `completeness.approximate_audit_complete` and

@@ -1,185 +1,114 @@
 # Market research: OpenClaw memory migration
 
-Research date: 2026-09-09
+Research date: 2026-11-11
+Previous baseline: 2026-09-09
 
 ## Executive finding
 
-OpenClaw has an active market for stronger memory backends, but no discoverable
-open-source project is focused on safely migrating multiple existing backends
-into `memory-core` with count reconciliation, approval gates, rollback, and
-recall evidence.
+The niche remains credible: become the trusted migration and verification layer
+into `memory-core`, not another retrieval backend. Since September, three shifts
+matter:
 
-The opportunity is narrow but credible: do not compete with memory plugins on
-retrieval quality. Become the trusted migration and verification layer between
-them.
+1. Official memory-core is more clearly positioned as the core search/recall
+   path, with supported doctor migration from QMD and `memory-wiki` as a
+   companion layer.
+2. Marketing and blogs more often pull operators **toward** LanceDB Pro, so
+   reverse traffic exists beside the original “return to official” path.
+3. Adjacent migrators appeared, mostly **outbound** from OpenClaw or
+   multi-ecosystem converters. Evidence-first Pro→core cutover is still thin.
 
-## Verified signals
+## Verified signals (2026-11-11)
 
-### A large third-party backend footprint
+### Channel funnel for this project
+
+| Channel | Metric |
+| --- | --- |
+| ClawHub `memory-core-migrator` | 459 downloads, 3 installs, latest `0.1.0-rc.2` |
+| SkillHub `openclaw-memory-migrator` | 131 downloads, 0 installs, public `1.0.3` |
+| GitHub | 1 star, 0 forks, no anonymized dry-run Issue reports |
+
+Downloads grew after rc.2 while installs barely moved. The primary gap is
+install → first successful dry-run, not pure discovery.
+
+### Third-party backend footprint
 
 [`CortexReach/memory-lancedb-pro`](https://github.com/CortexReach/memory-lancedb-pro)
-had 4,457 GitHub stars and 731 forks when checked on 2026-09-09. This is a
-strong adoption proxy for users who may later need to upgrade, switch, or
-recover memory backends. Stars are not active-install or revenue figures.
+had about 4,449 stars and 725 forks on 2026-11-11 (was 4,457 / 731 on
+2026-09-09). npm channels observed: `latest=1.0.32`, `beta=1.1.0-beta.9`;
+GitHub release `v1.1.0-beta.10` remains the tagged beta tip. Stars are interest
+proxies, not active installs.
 
-### Migration remains a product gap
+Official `@openclaw/memory-lancedb` published `2026.11.3` on npm. The `ltm`
+CLI is plugin-gated and absent from a bare OpenClaw core install.
 
-GitHub repository search for `openclaw memory migration` returned no direct
-project on 2026-09-09. OpenClaw issue
-[#45993](https://github.com/openclaw/openclaw/issues/45993) requested
-cross-platform export/import. It closed as stale on 2026-08-23, but its
-maintainer review still identified unresolved product decisions:
+### Competitive / adjacent set
 
-- secret inclusion and redaction;
-- path and symlink safety;
-- state compatibility;
-- merge versus replace behavior;
-- explicit operator approval and rollback.
+GitHub search for OpenClaw memory migration now returns several related tools:
 
-This project should not claim that OpenClaw has no migration facilities.
-OpenClaw provides backup/restore and registered migration providers; the gap is
-a backend-focused, multi-source memory cutover workflow.
+| Project | Direction | Notes |
+| --- | --- | --- |
+| `airbing11/openclaw-memory-migrator` | → memory-core | Evidence-first cutover |
+| `citriac/claw-migrate` | multi-Claw ecosystems | Broader, thinner proof contract |
+| `AlekseiUL/openclaw-to-hermes-migration-kit` | leave OpenClaw | Outbound |
+| DSH / TencentDB migrators | export outbound | Different target systems |
+| chat-history → OpenClaw importers | inbound history | Not backend cutover |
 
-OpenClaw's [`migrate` CLI](https://docs.openclaw.ai/cli/migrate) is
-preview-first and supports plugin-owned providers. Core owns verified
-pre-apply backup, conflict refusal, secret prompts, JSON reports, and
-non-interactive confirmation. A plugin declares provider IDs and calls
-`api.registerMigrationProvider(...)`. This gives the project a credible
-upstream integration route after standalone adapters are proven.
+Differentiation still holds when the product stays proof-first: counts, IDs,
+approvals, rollback readiness, and fail-closed adapters.
 
-### Official backup semantics support a proof-first product
+### Official migration surface
 
-OpenClaw's [backup documentation](https://docs.openclaw.ai/install/backups)
-states that live SQLite files must not be copied directly. Its supported backup
-paths use online SQLite backup, manifest validation, explicit restore staging,
-and sensitive-data handling. These constraints reinforce the product's
-verified-backup gate and refusal to modify internal SQLite tables.
+OpenClaw ships [`migrate`](https://docs.openclaw.ai/cli/migrate) for
+agent-system providers (for example Hermes). That is adjacent orchestration, not
+a substitute for multi-source memory-backend cutover with LanceDB Pro scopes and
+list-capture manifests. Longer term, adapters may wrap
+`registerMigrationProvider` once they are stable.
 
-### Benchmarking exists but is early
+### Benchmarking and reverse marketing
 
 [`phenomenoner/openclaw-memory-bench`](https://github.com/phenomenoner/openclaw-memory-bench)
-had 3 stars on 2026-09-09. It demonstrates demand for Recall@K, MRR, nDCG, and
-latency measurement, but not broad adoption. Compatibility with its metrics is
-useful; a hard dependency would add risk without clear distribution benefit.
-
-### Adjacent products validate persistent-memory demand
-
-Mem0, OpenMemo, MemoryVault, Markdown-first hybrid stacks, QMD, and LanceDB
-plugins address storage and retrieval. They are adjacent systems rather than
-direct migration competitors. Their existence validates user interest while
-leaving backend transition safety fragmented.
+remains early. LanceDB-authored comparisons that favor Pro retrieval accuracy
+increase demand for paired before/after evidence if this project claims
+non-regression. Until a paired runner exists, publish only health checks or
+explicitly scoped comparisons.
 
 ## User segments
 
-1. Self-hosted operators after an OpenClaw upgrade
-   - Trigger: plugin incompatibility, backend deprecation, provider change.
-   - Need: a guided, recoverable cutover without memory vacuum.
-   - Barrier: fear of exposing private memories or breaking messaging channels.
+1. Self-hosted operators after an OpenClaw upgrade or plugin breakage
+2. Operators who tried Pro/official LanceDB and want a recoverable return path
+3. Consultants repeating heterogeneous migrations
+4. Chinese SkillHub operators who download but never complete first dry-run
 
-2. Consultants and plugin maintainers
-   - Trigger: repeated customer migrations across heterogeneous hosts.
-   - Need: deterministic manifests, capability detection, and audit reports.
-   - Barrier: unsupported schema variations and liability for data loss.
+## Positioning rules
 
-3. Multi-agent operations teams
-   - Trigger: agent isolation, scope drift, or embedding-space migration.
-   - Need: per-agent reconciliation and benchmark evidence.
-   - Barrier: credentials, personal data, and downtime controls.
+Keep:
 
-## Competitive position
+- trusted migration and verification into memory-core;
+- no lossless / one-click / recall-improvement claims without scoped evidence;
+- local-only processing and privacy redlines.
 
-### What alternatives do well
+Explore carefully:
 
-- Backend plugins improve storage, recall, extraction, or sharing.
-- Official backup protects whole-state recovery.
-- Benchmark tools measure retrieval.
-- Manual guides can solve one known environment.
+- dual-direction safety kit (Pro↔core) under the same proof contract;
+- memory-wiki bridge awareness after core cutover;
+- Chinese “切回官方记忆” pack focused on install→CLI path friction.
 
-### Unoccupied combination
-
-OpenClaw Memory Migrator combines:
-
-- source capability detection;
-- versioned text-first interchange;
-- count/ID/hash reconciliation;
-- report-only duplicate analysis;
-- verified backup and run-bound approvals;
-- staged memory-core rendering;
-- recall comparison and rollback evidence.
-
-The defensible asset is not a converter script. It is the compatibility corpus,
-failure fixtures, and safety contract accumulated across releases.
-
-Longer term, source adapters should become OpenClaw migration providers while
-the Skill remains the guided operator experience. Competing with the official
-orchestrator would add risk without differentiation.
-
-## Adoption risks
-
-- Trust: memory exports can contain deeply personal data.
-  - Default local-only processing; no telemetry; explicit secret checks.
-- Compatibility: plugin CLIs and schemas change.
-  - Detect help/schema; fail closed; publish a tested compatibility matrix.
-- Scope: supporting every pair of backends would overwhelm v0.1.
-  - Keep memory-core as the only initial target.
-- Expectations: users may assume feature equivalence after migration.
-  - Explain that extraction, auto-recall, scope, reranking, and dreaming differ.
-- Core convergence: OpenClaw may eventually ship native migration.
-  - Position the project as adapters, audits, and proof tooling that can wrap
-    official migration providers rather than replace them.
+Do not chase Hermes/DSH/Tencent outbound migrations as the core roadmap.
 
 ## Distribution
 
-Primary:
+Primary: GitHub releases, ClawHub Skill, SkillHub listing, OpenClaw community.
 
-- GitHub repository and releases
-- ClawHub Skill listing
-- OpenClaw community and relevant GitHub discussions
-
-Chinese launch:
-
-- 知乎/微信公众号 case-study article
-- V2EX and 掘金 technical posts
-- Bilibili walkthrough
-- Gitee mirror after GitHub release stabilizes
-
-International launch:
-
-- Hacker News Show HN
-- relevant OpenClaw community and Reddit
-- short X/LinkedIn engineering thread
-
-Do not post until install instructions, synthetic fixtures, security policy,
-and one independently repeatable dry run are available.
-
-## Search language
-
-English:
-
-- OpenClaw memory migration
-- migrate LanceDB to memory-core
-- OpenClaw memory backup and restore
-- OpenClaw memory deduplication
-- QMD to memory-core
-
-Chinese:
-
-- OpenClaw 记忆迁移
-- LanceDB 迁移 memory-core
-- OpenClaw 记忆备份恢复
-- OpenClaw 记忆去重
-- QMD 切换内置记忆
-
-Use “memory” in English metadata. Chinese copy should use “记忆”, not the
-literal software-memory translation “内存”.
+Chinese: 知乎/公众号, V2EX/掘金, SkillHub recipes. Prefer install-path clarity
+over more awareness posts while installs lag downloads.
 
 ## Evidence limitations
 
-- No reliable total-addressable-market or install-count dataset was found.
-- GitHub stars/forks are interest proxies, not active users.
-- Community posts and issues overrepresent users with failures.
-- The originating production case is one environment and must not be presented
-  as a universal success rate.
+- No reliable TAM or active-install census.
+- Stars/forks and ClawHub downloads overstate readiness.
+- One dogfood environment (2026-09-18) is not a universal success rate.
+- This refresh used public package/CLI/docs checks, not a new live export cutover.
 
-The next meaningful market evidence should come from five to ten structured
-operator interviews and anonymized dry-run manifests from distinct setups.
+Next market evidence should still come from anonymized dry-run reports and a
+fresh live compatibility dry-run against a current Pro beta and official LanceDB
+install.

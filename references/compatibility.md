@@ -1,6 +1,7 @@
 # Compatibility policy
 
 Support is based on detected capabilities, not version strings alone.
+Refresh snapshot: [2026-11-11 matrix](../docs/compatibility-matrix-2026-11-11.md).
 
 ## Source adapters
 
@@ -11,9 +12,11 @@ Status: stable for version-gated JSON capture.
 - Discover scopes and counts with the installed plugin's stats command.
 - Read `memory-pro export --help` before composing commands.
 - Export every non-empty scope independently.
-- `memory-lancedb-pro` v1.1.0-beta.10 export fetches at most 1,000 rows.
-- v1.1.0-beta.11 dogfooding still required separate operations per scope; no
-  verified `--all-scopes` export capability was available.
+- Published npm channels observed on 2026-11-11: `latest=1.0.32`,
+  `beta=1.1.0-beta.9`. GitHub still publishes `v1.1.0-beta.10`.
+- `v1.1.0-beta.10` export still lists with a fixed large budget of 1,000 rows.
+- Dogfood on a cold `1.1.0-beta.11` copy still required separate operations per
+  scope; no verified `--all-scopes` export capability was available.
 - If a scope exceeds the installed export limit, paginate
   `memory-pro list --scope <scope> --limit <n> --offset <n> --json` and wrap
   the pages in an adapter-owned manifest. Do not call that artifact an official
@@ -35,18 +38,25 @@ Verified reference:
 
 Status: beta, captured `ltm list` JSON only.
 
-OpenClaw 2026.9.1–2026.9.3 exposes `openclaw ltm list`, `search`, `query`, and
-`stats`, but no import/export command. Capture `ltm list` separately for every
-agent and wrap each JSON array in an adapter-owned manifest:
+The `openclaw ltm` namespace is registered by the installed
+`@openclaw/memory-lancedb` plugin. It is not part of a bare OpenClaw core
+install. On 2026-11-11, npm published `@openclaw/memory-lancedb@2026.11.3`. A
+local OpenClaw `2026.9.2` host without that plugin reported unknown command
+`ltm`.
+
+When the plugin is installed, current docs expose `ltm list`, `search`,
+`stats`, `query`, and related helpers, but still no full import/export command.
+Capture `ltm list` separately for every agent (use `--limit` and pagination when
+needed) and wrap each JSON array in an adapter-owned manifest:
 
 ```json
 {
   "schema_version": 1,
   "adapter": "lancedb-official-list-beta",
-  "openclaw_version": "2026.9.3",
-  "plugin_version": "2026.9.3",
+  "openclaw_version": "2026.9.2",
+  "plugin_version": "2026.11.3",
   "agent_id": "main",
-  "captured_at": "2026-09-09T00:00:00.000Z",
+  "captured_at": "2026-11-11T00:00:00.000Z",
   "count": 0,
   "records": []
 }
@@ -61,8 +71,9 @@ The source and OpenClaw CLIs may emit plugin warnings on stderr. Do not merge
 stderr into stdout before parsing JSON. This project keeps its own streams
 separate but does not claim to change upstream output behavior.
 
-Verified reference:
-[`memory-lancedb` CLI at 1391f7c](https://github.com/openclaw/openclaw/blob/1391f7cd2d40ab5bbcf2f5f831d3a64f520e72d7/extensions/memory-lancedb/memory-cli.ts#L107-L233).
+Verified references:
+[`memory-lancedb` docs](https://docs.openclaw.ai/plugins/memory-lancedb)
+and the package [`@openclaw/memory-lancedb`](https://www.npmjs.com/package/@openclaw/memory-lancedb).
 
 ### QMD
 
@@ -93,11 +104,17 @@ Never rewrite or merge an existing root `MEMORY.md` automatically.
 
 Status: stable through staged Markdown plus official indexing commands.
 
+OpenClaw documentation now treats built-in memory as the core search and recall
+path. `memory-wiki` is an optional companion compilation layer and does not
+replace the memory plugin slot.
+
 - Render imports beneath a dedicated `memory/imports/<source>/` directory.
 - Configure provider/model/tokenizer through OpenClaw configuration.
 - Treat SQLite FTS/vector tables and embedding caches as derived state.
-- Rebuild with the installed OpenClaw CLI.
+- Rebuild with the installed OpenClaw CLI (`openclaw memory index` / `status`).
 - Validate every configured agent separately.
+- Do not confuse `openclaw migrate` (agent-system import providers) with this
+  memory-backend cutover workflow.
 
 ## Explicit non-support
 

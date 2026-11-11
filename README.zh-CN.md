@@ -52,15 +52,15 @@ mkdir -p canonical reports staged-memory/imports
 node bin/openclaw-memory-migrator.js preflight \
   --input test/fixtures/lancedb-pro.json \
   --output canonical/memory-records.jsonl
-node bin/openclaw-memory-migrator.js normalize \
+node bin/openclaw-memory-migrator.js normalize --dry-run \
   --adapter lancedb-pro \
   --input test/fixtures/lancedb-pro.json \
   --output canonical/memory-records.jsonl
-node bin/openclaw-memory-migrator.js audit \
+# 可选：直接对源 fixture 做冒烟审计（不写盘）
+node bin/openclaw-memory-migrator.js audit --dry-run \
   --adapter lancedb-pro \
-  --input test/fixtures/lancedb-pro.json \
-  --output reports/audit.json
-node bin/openclaw-memory-migrator.js render \
+  --input test/fixtures/lancedb-pro.json
+node bin/openclaw-memory-migrator.js render --dry-run \
   --adapter lancedb-pro \
   --input test/fixtures/lancedb-pro.json \
   --output staged-memory/imports/lancedb-pro
@@ -70,9 +70,13 @@ fixture dry-run 通过后再从 ClawHub 安装：
 
 ```bash
 openclaw skills install memory-core-migrator
+openclaw skills info memory-core-migrator --json
+# 然后在返回的 skill 目录中运行：
+node <skill-dir>/bin/openclaw-memory-migrator.js --help
 ```
 
-然后用
+ClawHub slug `memory-core-migrator` 与仓库/Skill id `openclaw-memory-migrator`
+是同一套工具。然后用
 [脱敏 dry-run 表单](https://github.com/airbing11/openclaw-memory-migrator/issues/new?template=dry-run-report.yml)
 提交计数，不要提交记忆正文。
 
@@ -85,25 +89,24 @@ node bin/openclaw-memory-migrator.js preflight \
   --input export/global.json \
   --input export/main.json \
   --output canonical/memory-records.jsonl
-node bin/openclaw-memory-migrator.js normalize \
+node bin/openclaw-memory-migrator.js normalize --dry-run \
   --adapter lancedb-pro \
   --input export/global.json \
   --input export/main.json \
+  --expected-total <trusted-snapshot-total> \
   --output canonical/memory-records.jsonl
-node bin/openclaw-memory-migrator.js audit \
-  --adapter lancedb-pro \
-  --input export/global.json \
-  --input export/main.json \
-  --output reports/audit.json
-node bin/openclaw-memory-migrator.js render \
-  --adapter lancedb-pro \
-  --input export/global.json \
-  --input export/main.json \
+# 在批准并执行 normalize --apply 写出 canonical JSONL 后：
+node bin/openclaw-memory-migrator.js audit --dry-run \
+  --adapter canonical-v1 \
+  --input canonical/memory-records.jsonl
+node bin/openclaw-memory-migrator.js render --dry-run \
+  --adapter canonical-v1 \
+  --input canonical/memory-records.jsonl \
   --output staged-memory/imports/lancedb-pro
 ```
 
-CLI 默认只做本地、非破坏性转换。生产使用前必须阅读
-[`SKILL.md`](SKILL.md)。
+CLI 默认只做本地、非破坏性转换。`--dry-run` 是该默认行为的显式别名，不能与
+`--apply` 同时使用。生产使用前必须阅读 [`SKILL.md`](SKILL.md)。
 
 召回对比方法见
 [`docs/benchmark-methodology.md`](docs/benchmark-methodology.md)。

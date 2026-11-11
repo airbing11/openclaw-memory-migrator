@@ -21,7 +21,8 @@ from a third-party memory backend back to OpenClaw's official memory-core.
 ## Safety rules
 
 1. Run only in an authenticated owner DM, Control UI, or local operator shell. Refuse execution from group or channel chats.
-2. Default to read-only discovery and `--dry-run`.
+2. Default to read-only discovery. The CLI is dry-run unless `--apply` is set;
+   `--dry-run` is an explicit alias and conflicts with `--apply`.
 3. Never copy source vectors into memory-core SQLite. Export authoritative text and metadata, then let memory-core rebuild derived indexes.
 4. Never delete a source database, SQLite file, WAL/SHM sidecar, Markdown file, or backup.
 5. Before writes, require a verified OpenClaw backup and a run-bound approval:
@@ -36,12 +37,35 @@ from a third-party memory backend back to OpenClaw's official memory-core.
 
 - Stable: memory-lancedb-pro JSON capture to memory-core Markdown.
 - Stable: Markdown or QMD-owned Markdown to memory-core Markdown.
-- Beta: captured official memory-lancedb `ltm list` JSON to memory-core Markdown.
+- Beta: captured official memory-lancedb `ltm list` JSON to memory-core Markdown
+  (requires the installed `@openclaw/memory-lancedb` plugin; bare OpenClaw has
+  no `ltm` command).
 - Unsupported: direct opaque LanceDB database parsing, vector transfer, arbitrary backend-to-backend sync.
 
 Read [references/compatibility.md](references/compatibility.md) before selecting an adapter.
 For operator questions and copyable workflows, see
 [docs/faq.md](docs/faq.md) and [docs/recipes.md](docs/recipes.md).
+Compatibility refresh notes:
+[docs/compatibility-matrix-2026-11-11.md](docs/compatibility-matrix-2026-11-11.md).
+
+## Invoke the CLI
+
+From this repository:
+
+```bash
+node bin/openclaw-memory-migrator.js --help
+```
+
+After ClawHub install (`openclaw skills install memory-core-migrator`), resolve
+the skill directory with `openclaw skills info memory-core-migrator --json` and
+run:
+
+```bash
+node <skill-dir>/bin/openclaw-memory-migrator.js --help
+```
+
+The ClawHub slug is `memory-core-migrator`; the Skill/package id remains
+`openclaw-memory-migrator`.
 
 ## Workflow
 
@@ -54,6 +78,7 @@ Resolve rather than assume:
 - source plugin version and CLI help
 - source scopes and record counts
 - memory-core availability
+- whether `openclaw ltm` exists (official LanceDB plugin only)
 - embedding provider/model/dimensions
 - dreaming jobs and maintenance window
 - free disk and backup destination
@@ -86,7 +111,7 @@ Also inventory source databases and configured agent roots. Follow
 Select one adapter:
 
 ```bash
-node bin/openclaw-memory-migrator.js normalize \
+node bin/openclaw-memory-migrator.js normalize --dry-run \
   --adapter lancedb-pro \
   --input export/global.json \
   --input export/main.json \
@@ -112,11 +137,10 @@ the versioned `lancedb-official-list-beta` manifest documented in
 ### 4. Audit
 
 ```bash
-node bin/openclaw-memory-migrator.js audit \
+node bin/openclaw-memory-migrator.js audit --dry-run \
   --adapter canonical-v1 \
   --input canonical/memory-records.jsonl \
-  --max-comparisons 10000 \
-  --output reports/audit.json
+  --max-comparisons 10000
 ```
 
 Require:

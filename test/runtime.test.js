@@ -414,7 +414,7 @@ test("CLI warns on truncated audit and strict mode exits 2", async () => {
 test("CLI help and version are successful and side-effect free", async () => {
   for (const [args, expected] of [
     [["--help"], /Usage: openclaw-memory-migrator/],
-    [["--version"], /^0\.1\.0-rc\.2/m],
+    [["--version"], /^0\.1\.0-rc\.3/m],
   ]) {
     const stdout = capture();
     const stderr = capture();
@@ -422,4 +422,34 @@ test("CLI help and version are successful and side-effect free", async () => {
     assert.match(stdout.value, expected);
     assert.equal(stderr.value, "");
   }
+});
+
+test("CLI --dry-run is an explicit alias and conflicts with --apply", async () => {
+  const root = await temporaryDirectory();
+  const source = join(root, "input.json");
+  const output = join(root, "canonical.jsonl");
+  await writeFile(source, '[{"id":"1","text":"hello","scope":"global"}]');
+  const stdout = capture();
+  const stderr = capture();
+  assert.equal(await main([
+    "normalize",
+    "--dry-run",
+    "--adapter", "lancedb-pro",
+    "--input", source,
+    "--output", output,
+  ], { stdout: stdout.stream, stderr: stderr.stream }), 0);
+  const dryRun = JSON.parse(stdout.value);
+  assert.equal(dryRun.dry_run, true);
+  await assert.rejects(access(output));
+
+  const conflict = capture();
+  assert.equal(await main([
+    "normalize",
+    "--dry-run",
+    "--apply",
+    "--adapter", "lancedb-pro",
+    "--input", source,
+    "--output", output,
+  ], { stdout: conflict.stream, stderr: conflict.stream }), 2);
+  assert.match(conflict.value, /--dry-run conflicts with --apply/);
 });
