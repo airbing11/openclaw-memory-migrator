@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.0-rc.3
+
+- Added explicit `--dry-run` alias that conflicts with `--apply`.
+- Unified README/Skill recipes around dry-run defaults and `canonical-v1` audits
+  after normalize.
+- Documented ClawHub install → `skills info` → CLI path and slug naming.
+- Refreshed compatibility notes for plugin-gated `ltm`, current Pro npm/GitHub
+  channels, and memory-core / memory-wiki roles.
+- Added 2026-11-11 capability matrix and updated market research funnel metrics.
+
 ## 0.1.0-rc.2
 
 - Added complete/incomplete approximate-audit reporting, coverage, stderr

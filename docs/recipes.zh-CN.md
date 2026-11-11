@@ -9,7 +9,7 @@
 3. 传入全部文件并设置精确总数：
 
 ```bash
-node bin/openclaw-memory-migrator.js normalize \
+node bin/openclaw-memory-migrator.js normalize --dry-run \
   --adapter lancedb-pro \
   --input export/global.json \
   --input export/main.json \
@@ -26,7 +26,7 @@ node bin/openclaw-memory-migrator.js normalize \
 dry-run：
 
 ```bash
-node bin/openclaw-memory-migrator.js audit \
+node bin/openclaw-memory-migrator.js audit --dry-run \
   --adapter canonical-v1 \
   --input canonical/memory-records.jsonl \
   --max-comparisons 2000000 \

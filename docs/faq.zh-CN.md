@@ -6,6 +6,25 @@
 导出，并可能有 1,000 条上限。先发现全部 scope，逐一捕获，再通过多个
 `--input` 传入。自动 `--all-scopes` 编排延后到 v0.2.0。
 
+## 文档写了 `--dry-run`，为什么帮助里看起来可有可无？
+
+命令在未加 `--apply` 时本来就是 dry-run。`--dry-run` 只是该默认行为的显式别名，
+不能与 `--apply` 同时使用。共享配方建议始终写出 `--dry-run`，避免依赖隐式
+默认。
+
+## ClawHub 安装后 CLI 在哪里？
+
+执行 `openclaw skills install memory-core-migrator`，再用
+`openclaw skills info memory-core-migrator --json` 定位 skill 目录，然后运行
+`node <skill-dir>/bin/openclaw-memory-migrator.js`。ClawHub slug 与仓库 Skill
+id 仅命名不同。
+
+## 为什么本机执行 `openclaw ltm` 失败？
+
+`ltm` 由已安装的 `@openclaw/memory-lancedb` 插件注册。裸 OpenClaw 核心可能报告
+未知命令。捕获官方 LanceDB 列表 JSON 前，先安装或启用该插件，再使用
+`lancedb-official-list-beta` 适配器。
+
 ## 如何判断近似重复审计是否完整？
 
 检查 `completeness.approximate_audit_complete` 和

@@ -10,7 +10,7 @@ OpenClaw indexed workspace.
 3. Normalize all captured files with an exact total:
 
 ```bash
-node bin/openclaw-memory-migrator.js normalize \
+node bin/openclaw-memory-migrator.js normalize --dry-run \
   --adapter lancedb-pro \
   --input export/global.json \
   --input export/main.json \
@@ -28,7 +28,7 @@ For `n` records, the upper bound is `n * (n - 1) / 2` candidate pairs before
 exact-text pairs are removed. Run dry first:
 
 ```bash
-node bin/openclaw-memory-migrator.js audit \
+node bin/openclaw-memory-migrator.js audit --dry-run \
   --adapter canonical-v1 \
   --input canonical/memory-records.jsonl \
   --max-comparisons 2000000 \

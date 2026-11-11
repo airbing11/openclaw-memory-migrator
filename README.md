@@ -59,15 +59,15 @@ mkdir -p canonical reports staged-memory/imports
 node bin/openclaw-memory-migrator.js preflight \
   --input test/fixtures/lancedb-pro.json \
   --output canonical/memory-records.jsonl
-node bin/openclaw-memory-migrator.js normalize \
+node bin/openclaw-memory-migrator.js normalize --dry-run \
   --adapter lancedb-pro \
   --input test/fixtures/lancedb-pro.json \
   --output canonical/memory-records.jsonl
-node bin/openclaw-memory-migrator.js audit \
+# Optional smoke audit against the source fixture (no write):
+node bin/openclaw-memory-migrator.js audit --dry-run \
   --adapter lancedb-pro \
-  --input test/fixtures/lancedb-pro.json \
-  --output reports/audit.json
-node bin/openclaw-memory-migrator.js render \
+  --input test/fixtures/lancedb-pro.json
+node bin/openclaw-memory-migrator.js render --dry-run \
   --adapter lancedb-pro \
   --input test/fixtures/lancedb-pro.json \
   --output staged-memory/imports/lancedb-pro
@@ -77,9 +77,13 @@ Install from ClawHub after the fixture dry-run succeeds:
 
 ```bash
 openclaw skills install memory-core-migrator
+openclaw skills info memory-core-migrator --json
+# Then run the CLI from the reported skill directory:
+node <skill-dir>/bin/openclaw-memory-migrator.js --help
 ```
 
-Then file counts, not memory, through the
+ClawHub slug `memory-core-migrator` and repo/Skill id `openclaw-memory-migrator`
+refer to the same toolkit. Then file counts, not memory, through the
 [dry-run Issue Form](https://github.com/airbing11/openclaw-memory-migrator/issues/new?template=dry-run-report.yml).
 
 ## Quick start with your own export
@@ -91,24 +95,24 @@ node bin/openclaw-memory-migrator.js preflight \
   --input export/global.json \
   --input export/main.json \
   --output canonical/memory-records.jsonl
-node bin/openclaw-memory-migrator.js normalize \
+node bin/openclaw-memory-migrator.js normalize --dry-run \
   --adapter lancedb-pro \
   --input export/global.json \
   --input export/main.json \
+  --expected-total <trusted-snapshot-total> \
   --output canonical/memory-records.jsonl
-node bin/openclaw-memory-migrator.js audit \
-  --adapter lancedb-pro \
-  --input export/global.json \
-  --input export/main.json \
-  --output reports/audit.json
-node bin/openclaw-memory-migrator.js render \
-  --adapter lancedb-pro \
-  --input export/global.json \
-  --input export/main.json \
+# After an approved normalize --apply writes canonical JSONL:
+node bin/openclaw-memory-migrator.js audit --dry-run \
+  --adapter canonical-v1 \
+  --input canonical/memory-records.jsonl
+node bin/openclaw-memory-migrator.js render --dry-run \
+  --adapter canonical-v1 \
+  --input canonical/memory-records.jsonl \
   --output staged-memory/imports/lancedb-pro
 ```
 
-Commands default to local, non-destructive transformations. Read
+Commands default to local, non-destructive transformations. `--dry-run` is an
+explicit alias for that default and conflicts with `--apply`. Read
 [`SKILL.md`](SKILL.md) before production use.
 
 Recall comparisons follow
