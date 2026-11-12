@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.0-rc.4
+
+- Made `run-init` and `approve` dry-run by default. They create a local
+  run-state file or issue a token only with `--apply`.
+- Clarified that those writes never touch memory, exports, or OpenClaw databases.
+- Linked packaged CLI sources from `SKILL.md` and marked the render recipe as
+  an explicit dry-run.
+
 ## 0.1.0-rc.3
 
 - Added explicit `--dry-run` alias that conflicts with `--apply`.

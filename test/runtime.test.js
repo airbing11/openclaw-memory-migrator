@@ -414,7 +414,7 @@ test("CLI warns on truncated audit and strict mode exits 2", async () => {
 test("CLI help and version are successful and side-effect free", async () => {
   for (const [args, expected] of [
     [["--help"], /Usage: openclaw-memory-migrator/],
-    [["--version"], /^0\.1\.0-rc\.3/m],
+    [["--version"], /^0\.1\.0-rc\.4/m],
   ]) {
     const stdout = capture();
     const stderr = capture();
@@ -452,4 +452,38 @@ test("CLI --dry-run is an explicit alias and conflicts with --apply", async () =
     "--output", output,
   ], { stdout: conflict.stream, stderr: conflict.stream }), 2);
   assert.match(conflict.value, /--dry-run conflicts with --apply/);
+});
+
+test("run-init and approve stay read-only until --apply", async () => {
+  const root = await temporaryDirectory();
+  const statePath = join(root, "state.json");
+  const preview = capture();
+  assert.equal(await main(["run-init", "--state", statePath], {
+    stdout: preview.stream,
+    stderr: capture().stream,
+  }), 0);
+  assert.equal(JSON.parse(preview.value).dry_run, true);
+  assert.equal(JSON.parse(preview.value).writes, "none");
+  await assert.rejects(access(statePath));
+
+  const created = capture();
+  assert.equal(await main(["run-init", "--apply", "--state", statePath], {
+    stdout: created.stream,
+    stderr: capture().stream,
+  }), 0);
+  assert.equal(typeof JSON.parse(created.value).run_id, "string");
+
+  const approvalPreview = capture();
+  assert.equal(await main([
+    "approve", "--state", statePath, "--action", "normalize:/out.jsonl",
+  ], { stdout: approvalPreview.stream, stderr: capture().stream }), 0);
+  assert.equal(JSON.parse(approvalPreview.value).would_issue_one_use_approval, true);
+  assert.equal((await readFile(statePath, "utf8")).includes("normalize:/out.jsonl"), false);
+
+  const issued = capture();
+  assert.equal(await main([
+    "approve", "--apply", "--state", statePath, "--action", "normalize:/out.jsonl",
+  ], { stdout: issued.stream, stderr: capture().stream }), 0);
+  assert.match(issued.value.trim(), /^[^\s.]+\.[^\s]+$/);
+  assert.equal((await readFile(statePath, "utf8")).includes("normalize:/out.jsonl"), true);
 });
