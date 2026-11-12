@@ -9,10 +9,12 @@ Current plugin CLIs may require one export per scope and may cap exports at
 
 ## Why is `--dry-run` optional if docs mention it?
 
-Commands are already dry-run unless `--apply` is present. `--dry-run` is an
-explicit alias for that default and cannot be combined with `--apply`. Prefer
-including `--dry-run` in shared recipes so operators do not have to remember
-the implicit default.
+Every command is dry-run unless `--apply` is present, including `run-init` and
+`approve`. `--dry-run` is an explicit alias and cannot be combined with
+`--apply`. `run-init --apply` creates only a local run-state file.
+`approve --apply` issues one local, one-use token. Neither command writes
+memory files, exports, or OpenClaw databases. A dry-run of either command
+prints the intended action and writes nothing.
 
 ## Where is the CLI after a ClawHub install?
 

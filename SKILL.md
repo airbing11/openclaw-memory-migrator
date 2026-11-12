@@ -21,8 +21,11 @@ from a third-party memory backend back to OpenClaw's official memory-core.
 ## Safety rules
 
 1. Run only in an authenticated owner DM, Control UI, or local operator shell. Refuse execution from group or channel chats.
-2. Default to read-only discovery. The CLI is dry-run unless `--apply` is set;
-   `--dry-run` is an explicit alias and conflicts with `--apply`.
+2. Default to read-only discovery. Every CLI command, including `run-init` and
+   `approve`, is dry-run unless `--apply` is set. `--dry-run` is an explicit
+   alias and conflicts with `--apply`. `run-init --apply` writes only a local
+   run-state file. `approve --apply` issues one local token. Neither writes
+   memory, exports, or OpenClaw databases.
 3. Never copy source vectors into memory-core SQLite. Export authoritative text and metadata, then let memory-core rebuild derived indexes.
 4. Never delete a source database, SQLite file, WAL/SHM sidecar, Markdown file, or backup.
 5. Before writes, require a verified OpenClaw backup and a run-bound approval:
@@ -66,6 +69,14 @@ node <skill-dir>/bin/openclaw-memory-migrator.js --help
 
 The ClawHub slug is `memory-core-migrator`; the Skill/package id remains
 `openclaw-memory-migrator`.
+
+These commands execute only the JavaScript already in this package. They do
+not download code. Reviewable sources:
+
+- [bin/openclaw-memory-migrator.js](bin/openclaw-memory-migrator.js)
+- [lib/cli.js](lib/cli.js)
+- [lib/state.js](lib/state.js)
+- [lib/operations.js](lib/operations.js)
 
 ## Workflow
 
@@ -162,7 +173,7 @@ Deduplication is report-only in v0.1. Never delete automatically.
 ### 5. Render for memory-core
 
 ```bash
-node bin/openclaw-memory-migrator.js render \
+node bin/openclaw-memory-migrator.js render --dry-run \
   --adapter canonical-v1 \
   --input canonical/memory-records.jsonl \
   --output staged-memory/imports/<source>

@@ -8,9 +8,10 @@
 
 ## 文档写了 `--dry-run`，为什么帮助里看起来可有可无？
 
-命令在未加 `--apply` 时本来就是 dry-run。`--dry-run` 只是该默认行为的显式别名，
-不能与 `--apply` 同时使用。共享配方建议始终写出 `--dry-run`，避免依赖隐式
-默认。
+所有命令在未加 `--apply` 时都是 dry-run，包括 `run-init` 和 `approve`。
+`--dry-run` 只是显式别名，不能与 `--apply` 同时使用。`run-init --apply` 只创建
+本地 run-state 文件；`approve --apply` 只签发一枚本地一次性令牌。两者都不写记忆、
+导出或 OpenClaw 数据库。对这两个命令做 dry-run 只打印将要执行的动作，不落盘。
 
 ## ClawHub 安装后 CLI 在哪里？
 
